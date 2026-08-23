@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Florida DMV bilingual practice trainer - Chinese/English study, random 50-question tests, score, wrong answers, mastery tracking." />
+  <title>Florida DMV 英文刷题训练器</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">FLORIDA DMV TRAINER · V1</p>
+        <h1>佛州驾照英文刷题训练器</h1>
+        <p class="subtitle">中英对照理解 → 反复刷题 → 最后适应纯英文考试</p>
+      </div>
+      <button id="resetProgressBtn" class="ghost-btn danger-text" type="button">清空学习记录</button>
+    </header>
+
+    <section class="stats-grid" aria-label="学习统计">
+      <article class="stat-card">
+        <span>本轮进度</span>
+        <strong id="progressStat">0 / 50</strong>
+      </article>
+      <article class="stat-card">
+        <span>当前得分</span>
+        <strong id="scoreStat">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>错题本</span>
+        <strong id="wrongStat">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>已掌握</span>
+        <strong id="masteredStat">0 / 0</strong>
+      </article>
+    </section>
+
+    <nav class="mode-bar" aria-label="主要功能">
+      <button class="nav-btn active" data-view="quiz" type="button">刷题</button>
+      <button class="nav-btn" data-view="wrong" type="button">错题本</button>
+      <button class="nav-btn" data-view="mastered" type="button">已掌握</button>
+    </nav>
+
+    <section id="quizView" class="view-panel active">
+      <div id="startPanel" class="panel start-panel">
+        <span class="pill">第一版</span>
+        <h2>随机 50 题测试</h2>
+        <p>每次从当前题库随机抽取 50 道，本轮不会重复。默认显示英文 + 中文，你也可以随时切换成纯英文。</p>
+        <div class="settings-row">
+          <label class="toggle">
+            <input id="bilingualToggle" type="checkbox" checked />
+            <span>显示中文翻译</span>
+          </label>
+        </div>
+        <button id="startQuizBtn" class="primary-btn" type="button">开始随机 50 题</button>
+        <p class="small-note">当前题库为练习版整理题，不声称是 DMV 后台原题。后续会继续按 2026 FLHSMV 官方手册核对和扩充。</p>
+      </div>
+
+      <div id="questionPanel" class="panel question-panel hidden">
+        <div class="question-topline">
+          <span id="categoryBadge" class="pill"></span>
+          <span id="questionCounter">Question 1 / 50</span>
+        </div>
+
+        <h2 id="questionEn" class="question-en"></h2>
+        <p id="questionZh" class="question-zh"></p>
+
+        <div id="optionsContainer" class="options" role="group" aria-label="答案选项"></div>
+
+        <div id="feedbackBox" class="feedback hidden">
+          <strong id="feedbackTitle"></strong>
+          <p id="explanationEn"></p>
+          <p id="explanationZh"></p>
+          <div id="keywordsBox" class="keywords"></div>
+        </div>
+
+        <div class="question-actions">
+          <label class="toggle compact">
+            <input id="questionBilingualToggle" type="checkbox" checked />
+            <span>中英对照</span>
+          </label>
+          <button id="nextBtn" class="primary-btn hidden" type="button">下一题</button>
+        </div>
+      </div>
+
+      <div id="resultPanel" class="panel result-panel hidden">
+        <span class="pill">本轮完成</span>
+        <h2>测试结果</h2>
+        <div class="result-score"><span id="finalScore">0</span><small>/ 50</small></div>
+        <p id="resultMessage"></p>
+        <div class="result-actions">
+          <button id="restartBtn" class="primary-btn" type="button">再随机 50 题</button>
+          <button id="reviewWrongBtn" class="secondary-btn" type="button">查看错题本</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="wrongView" class="view-panel">
+      <div class="panel">
+        <div class="section-heading">
+          <div>
+            <span class="pill">LOCAL STORAGE</span>
+            <h2>错题本</h2>
+          </div>
+          <button id="clearWrongBtn" class="ghost-btn" type="button">清空错题本</button>
+        </div>
+        <p class="muted">答错的题会自动保存在这台浏览器中。以后每次重新打开网页仍然存在。</p>
+        <div id="wrongList" class="review-list"></div>
+      </div>
+    </section>
+
+    <section id="masteredView" class="view-panel">
+      <div class="panel">
+        <span class="pill">MASTERED</span>
+        <h2>已掌握题目</h2>
+        <p class="muted">同一道题连续答对 3 次后会进入“已掌握”。答错后会退出掌握状态并重新累计。</p>
+        <div id="masteredList" class="review-list"></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>学习工具 · 非 FLHSMV 官方网站 · 题目用于练习与记忆</p>
+    </footer>
+  </main>
+
+  <script src="data/questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
