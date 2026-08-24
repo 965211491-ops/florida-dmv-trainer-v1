@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">SCHOOL BUS STOP AHEAD (S3-1)</title>
+  <desc id="desc">Original study reconstruction of the SCHOOL BUS STOP AHEAD traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="29" y="29" width="142" height="142" rx="8" transform="rotate(45 100 100)" fill="#b7e22d" stroke="#111827" stroke-width="5"/>
+  <rect x="45" y="73" width="110" height="65" rx="8" fill="#111827"/><rect x="59" y="82" width="78" height="24" fill="#b7e22d"/><circle cx="70" cy="143" r="11"/><circle cx="132" cy="143" r="11"/>
+</svg>

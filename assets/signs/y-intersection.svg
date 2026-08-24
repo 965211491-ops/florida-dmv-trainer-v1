@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">Y-INTERSECTION (W2-5)</title>
+  <desc id="desc">Original study reconstruction of the Y-INTERSECTION traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="29" y="29" width="142" height="142" rx="8" transform="rotate(45 100 100)" fill="#facc15" stroke="#111827" stroke-width="5"/>
+  <path d="M100 165V95M100 105 58 45M100 105l42-60" stroke="#111827" stroke-width="15" stroke-linecap="round"/>
+</svg>

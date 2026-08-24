@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">INTERSTATE ROUTE (M1-1)</title>
+  <desc id="desc">Original study reconstruction of the INTERSTATE ROUTE traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <path d="M26 35q74-25 148 0v65q0 54-74 86-74-32-74-86z" fill="#1d4ed8" stroke="#fff" stroke-width="6"/><path d="M31 38q69-22 138 0v38H31z" fill="#c81e1e"/>
+  <text x="100" y="67.0" text-anchor="middle" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800">INTERSTATE</text><text x="100" y="126.0" text-anchor="middle" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800">95</text>
+</svg>

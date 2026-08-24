@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">LOOSE GRAVEL (W8-7)</title>
+  <desc id="desc">Original study reconstruction of the LOOSE GRAVEL traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="29" y="29" width="142" height="142" rx="8" transform="rotate(45 100 100)" fill="#facc15" stroke="#111827" stroke-width="5"/>
+  <path d="M55 104h90l-13-27H70z" fill="#111827"/><rect x="48" y="100" width="104" height="32" rx="7" fill="#111827"/><circle cx="72" cy="135" r="10"/><circle cx="130" cy="135" r="10"/><g fill="#111827"><circle cx="42" cy="146" r="5"/><circle cx="29" cy="132" r="4"/><circle cx="158" cy="146" r="5"/><circle cx="171" cy="132" r="4"/></g>
+</svg>

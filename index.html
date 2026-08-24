@@ -3,129 +3,269 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Florida DMV bilingual practice trainer - Chinese/English study, random 50-question tests, score, wrong answers, mastery tracking." />
-  <title>Florida DMV 英文刷题训练器</title>
+  <meta name="theme-color" content="#1e3a8a" />
+  <meta
+    name="description"
+    content="美国 DMV 英文驾考训练 — 用中文学习驾考知识，再用英文完成练习与模拟考试。"
+  />
+  <title>美国 DMV 英文驾考训练 | US DMV English Trainer</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app-shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">FLORIDA DMV TRAINER · V1</p>
-        <h1>佛州驾照英文刷题训练器</h1>
-        <p class="subtitle">中英对照理解 → 反复刷题 → 最后适应纯英文考试</p>
-      </div>
-      <button id="resetProgressBtn" class="ghost-btn danger-text" type="button">清空学习记录</button>
-    </header>
+  <a class="skip-link" href="#appMain">跳到主要内容</a>
 
-    <section class="stats-grid" aria-label="学习统计">
-      <article class="stat-card">
-        <span>本轮进度</span>
-        <strong id="progressStat">0 / 50</strong>
-      </article>
-      <article class="stat-card">
-        <span>当前得分</span>
-        <strong id="scoreStat">0</strong>
-      </article>
-      <article class="stat-card">
-        <span>错题本</span>
-        <strong id="wrongStat">0</strong>
-      </article>
-      <article class="stat-card">
-        <span>已掌握</span>
-        <strong id="masteredStat">0 / 0</strong>
-      </article>
+  <header class="topbar">
+    <button id="brandHomeBtn" class="brand-button" type="button" aria-label="返回学习主页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 36 36" role="img">
+          <path d="M11 32 16 4h4l5 28h-5l-1-7h-2l-1 7z" fill="currentColor" />
+          <path d="M18 8v6m0 5v3" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </span>
+      <span>
+        <strong>美国 DMV 英文驾考训练</strong>
+        <small>US DMV English Trainer</small>
+      </span>
+    </button>
+    <button id="changeStateBtn" class="text-button hidden" type="button"><strong>切换州</strong><small>Change State</small></button>
+  </header>
+
+  <main id="appMain" class="app-shell">
+    <section id="stateView" class="view" aria-labelledby="stateHeroTitle">
+      <div class="state-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">美国驾照知识 · 英文考试能力</p>
+          <h1 id="stateHeroTitle">美国 DMV 英文驾考训练</h1>
+          <p class="hero-tagline">先用中文学会，再用英文通过。</p>
+          <p class="hero-support">中英对照学习，逐步适应美国 DMV 纯英文考试。<span class="english-aux">Learn in Chinese. Pass in English.</span></p>
+        </div>
+        <div class="road-visual" aria-hidden="true">
+          <svg viewBox="0 0 360 230">
+            <defs>
+              <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#dbeafe" />
+                <stop offset="1" stop-color="#eff6ff" />
+              </linearGradient>
+            </defs>
+            <rect width="360" height="230" rx="28" fill="url(#sky)" />
+            <circle cx="295" cy="48" r="20" fill="#fbbf24" opacity=".85" />
+            <path d="M0 165 83 104l55 34 63-60 159 105v47H0z" fill="#bfdbfe" />
+            <path d="M112 230 168 92h25l60 138z" fill="#334155" />
+            <path d="m179 110 4 17m4 20 6 25m7 28 7 30" stroke="#fff" stroke-width="6" stroke-linecap="round" />
+            <g transform="translate(62 92)">
+              <path d="M0 15 15 0h36l15 15v36L51 66H15L0 51z" fill="#dc2626" />
+              <path d="M6 17 17 6h32l11 11v32L49 60H17L6 49z" fill="none" stroke="#fff" stroke-width="3" />
+              <text x="33" y="40" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">STOP</text>
+              <path d="M33 66v45" stroke="#64748b" stroke-width="5" />
+            </g>
+            <g transform="translate(230 150)">
+              <path d="M8 29h79l-8-21H25z" fill="#2563eb" />
+              <path d="M15 29h69a10 10 0 0 1 10 10v14H5V39a10 10 0 0 1 10-10Z" fill="#1e3a8a" />
+              <circle cx="24" cy="54" r="9" fill="#0f172a" />
+              <circle cx="76" cy="54" r="9" fill="#0f172a" />
+              <rect x="29" y="13" width="42" height="16" rx="5" fill="#dbeafe" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="section-intro">
+        <div>
+          <p class="eyebrow">开始学习 · START HERE</p>
+          <h2>选择考试州</h2>
+          <p>选择你准备参加驾照知识考试的州。<span class="english-aux">Choose the state for your DMV knowledge test.</span></p>
+        </div>
+        <span class="availability-note">佛罗里达州现已开放 · Florida Available</span>
+      </div>
+      <div id="stateCards" class="state-grid" aria-live="polite"></div>
+      <p class="coming-note">更多州正在准备中 · More states coming soon</p>
     </section>
 
-    <nav class="mode-bar" aria-label="主要功能">
-      <button class="nav-btn active" data-view="quiz" type="button">刷题</button>
-      <button class="nav-btn" data-view="wrong" type="button">错题本</button>
-      <button class="nav-btn" data-view="mastered" type="button">已掌握</button>
-    </nav>
-
-    <section id="quizView" class="view-panel active">
-      <div id="startPanel" class="panel start-panel">
-        <span class="pill">第一版</span>
-        <h2>随机 50 题测试</h2>
-        <p>每次从当前题库随机抽取 50 道，本轮不会重复。默认显示英文 + 中文，你也可以随时切换成纯英文。</p>
-        <div class="settings-row">
-          <label class="toggle">
-            <input id="bilingualToggle" type="checkbox" checked />
-            <span>显示中文翻译</span>
-          </label>
+    <section id="dashboardView" class="view hidden" aria-labelledby="dashboardTitle">
+      <div class="dashboard-heading">
+        <div>
+          <p class="eyebrow">学习主页 · STUDY DASHBOARD</p>
+          <h1 id="dashboardTitle">佛罗里达州</h1>
+          <p id="dashboardEnglishName" class="page-english-name">Florida</p>
+          <p class="dashboard-meta"><span>FL</span><span>E 类驾照 · Class E</span><span>2026 学习版</span></p>
         </div>
-        <button id="startQuizBtn" class="primary-btn" type="button">开始随机 50 题</button>
-        <p class="small-note">当前题库为练习版整理题，不声称是 DMV 后台原题。后续会继续按 2026 FLHSMV 官方手册核对和扩充。</p>
+        <div class="dashboard-sign" aria-hidden="true">
+          <img src="assets/signs/stop.svg" alt="" />
+        </div>
       </div>
 
-      <div id="questionPanel" class="panel question-panel hidden">
-        <div class="question-topline">
-          <span id="categoryBadge" class="pill"></span>
-          <span id="questionCounter">Question 1 / 50</span>
-        </div>
+      <section class="stats-grid" aria-label="总体学习数据">
+        <article class="stat-card"><span>已掌握</span><strong id="dashboardMastered">0 / 0</strong><small>Mastered</small></article>
+        <article class="stat-card"><span>待复习错题</span><strong id="dashboardWrong">0</strong><small>Wrong Answers</small></article>
+        <article class="stat-card"><span>累计正确率</span><strong id="dashboardAccuracy">0%</strong><small>Accuracy</small></article>
+        <article class="stat-card"><span>累计答题</span><strong id="dashboardPracticed">0</strong><small>Practiced</small></article>
+      </section>
 
+      <section class="feature-grid" aria-label="学习项目">
+        <article class="feature-card feature-primary">
+          <div class="feature-icon" aria-hidden="true">R</div>
+          <div class="feature-copy">
+            <p class="feature-kicker">日常学习 · DAILY STUDY</p>
+            <h2>随机刷题</h2>
+            <p class="feature-en">Random Practice</p>
+            <p>从佛罗里达州题库中随机抽题练习。<span class="english-aux">Random questions from your Florida study bank.</span></p>
+          </div>
+          <div class="feature-actions practice-actions">
+            <label for="practiceCount">题目数量 · Questions</label>
+            <select id="practiceCount" aria-label="选择练习题目数量">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="50" selected>50</option>
+            </select>
+            <button id="startPracticeBtn" class="primary-btn" type="button">开始练习 <small>Start Practice</small></button>
+          </div>
+        </article>
+
+        <button id="openWrongBtn" class="feature-card feature-button" type="button">
+          <span class="feature-icon feature-icon-red" aria-hidden="true">W</span>
+          <span class="feature-copy"><span class="feature-kicker">智能复习 · SMART REVIEW</span><strong>错题本</strong><span class="feature-en">Wrong Answers</span><span id="wrongCardSummary">0 道题需要复习</span></span>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <button id="openMasteredBtn" class="feature-card feature-button" type="button">
+          <span class="feature-icon feature-icon-green" aria-hidden="true">M</span>
+          <span class="feature-copy"><span class="feature-kicker">掌握程度 · CONFIDENCE</span><strong>已掌握题目</strong><span class="feature-en">Mastered Questions</span><span id="masteredCardSummary">0 / 0</span></span>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <button id="startRoadSignsBtn" class="feature-card feature-button" type="button">
+          <span class="feature-icon feature-icon-amber" aria-hidden="true">S</span>
+          <span class="feature-copy"><span class="feature-kicker">专项训练 · FOCUS MODE</span><strong>交通标志专项</strong><span class="feature-en">Road Sign Practice</span><span id="roadSignsCardSummary">0 道题可练习</span></span>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <button id="startExamBtn" class="feature-card feature-button exam-card" type="button">
+          <span class="feature-icon" aria-hidden="true">E</span>
+          <span class="feature-copy"><span class="feature-kicker">考前检测 · TEST READINESS</span><strong>模拟考试</strong><span class="feature-en">Exam Simulator</span><span>50 道题 · 进入后全英文</span></span>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <button id="openProgressBtn" class="feature-card feature-button" type="button">
+          <span class="feature-icon feature-icon-slate" aria-hidden="true">P</span>
+          <span class="feature-copy"><span class="feature-kicker">学习数据 · YOUR DATA</span><strong>学习进度</strong><span class="feature-en">Progress</span><span>查看完整学习记录</span></span>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+      </section>
+      <p class="legal-note">独立学习工具，与 FLHSMV 无隶属关系；练习题并非官方考试原题。<span class="english-aux">Independent study tool · Not affiliated with FLHSMV · Practice questions are not official exam questions.</span></p>
+    </section>
+
+    <section id="questionView" class="view hidden" aria-labelledby="quizModeTitle">
+      <div class="page-toolbar">
+        <button id="exitQuizBtn" class="back-button" type="button">← Home</button>
+        <div><p id="quizModeKicker" class="eyebrow">STUDY MODE</p><h1 id="quizModeTitle">Random Practice</h1></div>
+        <div id="liveScore" class="live-score"><span>Score</span><strong id="liveScoreValue">0</strong></div>
+      </div>
+
+      <article class="question-card">
+        <div class="question-progress-row"><span id="questionCounter">Question 1 / 50</span><span id="questionPercent">2%</span></div>
+        <div class="progress-track" aria-hidden="true"><span id="questionProgressBar"></span></div>
+        <div class="question-meta"><span id="categoryBadge" class="pill">SAFE DRIVING</span><span id="scopeBadge" class="scope-label">FLORIDA</span></div>
+        <div id="questionImageWrap" class="question-image-wrap hidden"><img id="questionImage" src="" alt="" /></div>
         <h2 id="questionEn" class="question-en"></h2>
         <p id="questionZh" class="question-zh"></p>
-
-        <div id="optionsContainer" class="options" role="group" aria-label="答案选项"></div>
-
-        <div id="feedbackBox" class="feedback hidden">
-          <strong id="feedbackTitle"></strong>
-          <p id="explanationEn"></p>
-          <p id="explanationZh"></p>
-          <div id="keywordsBox" class="keywords"></div>
+        <div id="optionsContainer" class="options" role="group" aria-label="Answer choices"></div>
+        <div id="feedbackBox" class="feedback hidden" aria-live="polite">
+          <strong id="feedbackTitle"></strong><p id="explanationEn"></p><p id="explanationZh"></p><div id="keywordsBox" class="keywords"></div>
         </div>
-
         <div class="question-actions">
-          <label class="toggle compact">
-            <input id="questionBilingualToggle" type="checkbox" checked />
-            <span>中英对照</span>
-          </label>
-          <button id="nextBtn" class="primary-btn hidden" type="button">下一题</button>
-        </div>
-      </div>
-
-      <div id="resultPanel" class="panel result-panel hidden">
-        <span class="pill">本轮完成</span>
-        <h2>测试结果</h2>
-        <div class="result-score"><span id="finalScore">0</span><small>/ 50</small></div>
-        <p id="resultMessage"></p>
-        <div class="result-actions">
-          <button id="restartBtn" class="primary-btn" type="button">再随机 50 题</button>
-          <button id="reviewWrongBtn" class="secondary-btn" type="button">查看错题本</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="wrongView" class="view-panel">
-      <div class="panel">
-        <div class="section-heading">
-          <div>
-            <span class="pill">LOCAL STORAGE</span>
-            <h2>错题本</h2>
+          <div id="languageControl" class="segmented-control" aria-label="Question language mode">
+            <button class="language-btn active" data-language="bilingual" type="button">Bilingual</button>
+            <button class="language-btn" data-language="english" type="button">English Only</button>
           </div>
-          <button id="clearWrongBtn" class="ghost-btn" type="button">清空错题本</button>
+          <button id="nextBtn" class="primary-btn hidden" type="button">Next Question</button>
         </div>
-        <p class="muted">答错的题会自动保存在这台浏览器中。以后每次重新打开网页仍然存在。</p>
-        <div id="wrongList" class="review-list"></div>
-      </div>
+        <p id="examNotice" class="exam-notice hidden">Answers are locked after selection. Results appear after all 50 questions.</p>
+      </article>
     </section>
 
-    <section id="masteredView" class="view-panel">
-      <div class="panel">
-        <span class="pill">MASTERED</span>
-        <h2>已掌握题目</h2>
-        <p class="muted">同一道题连续答对 3 次后会进入“已掌握”。答错后会退出掌握状态并重新累计。</p>
-        <div id="masteredList" class="review-list"></div>
-      </div>
+    <section id="resultView" class="view hidden" aria-labelledby="resultTitle">
+      <div class="page-toolbar simple-toolbar"><button class="back-button home-action" type="button">← Home</button></div>
+      <article class="result-card">
+        <div id="resultStatusIcon" class="result-status-icon" aria-hidden="true">✓</div>
+        <p id="resultKicker" class="eyebrow">SESSION COMPLETE</p><h1 id="resultTitle">Practice Complete</h1>
+        <div class="result-score"><span id="finalScore">0</span><small id="finalScoreTotal">/ 50</small></div>
+        <strong id="passStatus" class="pass-status hidden">PASS</strong>
+        <p id="resultMessage" class="result-message"></p>
+        <div class="result-breakdown">
+          <div><span>Correct</span><strong id="correctResult">0</strong></div>
+          <div><span>Incorrect</span><strong id="incorrectResult">0</strong></div>
+          <div><span>Accuracy</span><strong id="accuracyResult">0%</strong></div>
+        </div>
+        <div class="result-actions">
+          <button id="restartBtn" class="primary-btn" type="button">Practice Again</button>
+          <button id="resultWrongBtn" class="secondary-btn" type="button">Review Wrong Answers</button>
+          <button class="secondary-btn home-action" type="button">Back Home</button>
+        </div>
+      </article>
     </section>
 
-    <footer>
-      <p>学习工具 · 非 FLHSMV 官方网站 · 题目用于练习与记忆</p>
-    </footer>
+    <section id="wrongView" class="view hidden" aria-labelledby="wrongTitle">
+      <div class="page-toolbar">
+        <button class="back-button home-action" type="button">← 返回主页 <small>Home</small></button>
+        <div><p class="eyebrow">智能复习 · SMART REVIEW</p><h1 id="wrongTitle">错题本</h1><p class="page-english-name">Wrong Answers</p><p><span id="wrongPageCount">0</span> 道题需要复习</p></div>
+      </div>
+      <div class="list-actions"><button id="practiceWrongBtn" class="primary-btn" type="button">练习错题 <small>Practice Wrong Questions</small></button><button id="clearWrongBtn" class="ghost-btn danger-text" type="button">清空错题 <small>Clear Wrong Answers</small></button></div>
+      <div id="wrongList" class="review-list"></div>
+    </section>
+
+    <section id="masteredView" class="view hidden" aria-labelledby="masteredTitle">
+      <div class="page-toolbar">
+        <button class="back-button home-action" type="button">← 返回主页 <small>Home</small></button>
+        <div><p class="eyebrow">巩固成果 · CONFIDENCE BUILDER</p><h1 id="masteredTitle">已掌握题目</h1><p class="page-english-name">Mastered Questions</p><p>已掌握 <span id="masteredPageCount">0</span> 道题</p></div>
+      </div>
+      <div id="masteredList" class="review-list"></div>
+    </section>
+
+    <section id="progressView" class="view hidden" aria-labelledby="progressTitle">
+      <div class="page-toolbar">
+        <button class="back-button home-action" type="button">← 返回主页 <small>Home</small></button>
+        <div><p class="eyebrow">学习汇总 · LEARNING SUMMARY</p><h1 id="progressTitle">学习进度</h1><p class="page-english-name">Progress</p></div>
+      </div>
+      <div class="progress-summary-grid">
+        <article><span>累计答题</span><strong id="progressPracticed">0</strong><small>Total Practiced</small></article>
+        <article><span>累计正确率</span><strong id="progressAccuracy">0%</strong><small>Accuracy</small></article>
+        <article><span>已掌握</span><strong id="progressMastered">0</strong><small>连续答对 3 次 · Mastered</small></article>
+        <article><span>待复习错题</span><strong id="progressWrong">0</strong><small>Wrong Questions</small></article>
+      </div>
+      <article class="mastery-panel">
+        <div class="mastery-heading"><div><p class="eyebrow">题库掌握度 · BANK MASTERY</p><h2>题库掌握比例</h2><p class="page-english-name">Mastery Percentage</p></div><strong id="masteryPercentage">0%</strong></div>
+        <div class="progress-track large"><span id="masteryBar"></span></div><p id="masteryDetail">0 of 0 questions mastered</p>
+      </article>
+      <div class="data-actions"><button id="resetProgressBtn" class="ghost-btn danger-text" type="button">重置全部学习数据 <small>Reset All Learning Data</small></button></div>
+    </section>
   </main>
 
+  <footer class="site-footer">
+    <strong>美国 DMV 英文驾考训练</strong><span id="versionText">V2.1</span>
+    <small class="footer-english">US DMV English Trainer</small>
+    <p>独立学习工具，并非 DMV 或 FLHSMV 官方网站。<span class="english-aux">Independent learning tool · Not an official DMV or FLHSMV website.</span></p>
+  </footer>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
   <script src="data/questions.js"></script>
-  <script src="app.js"></script>
+  <script src="data/common/questions.js"></script>
+  <script src="data/knowledge/signs.js"></script>
+  <script src="data/common/sign-question-factory.js"></script>
+  <script src="data/common/signs-regulatory.js"></script>
+  <script src="data/common/signs-warning.js"></script>
+  <script src="data/common/signs-school.js"></script>
+  <script src="data/common/signs-railroad.js"></script>
+  <script src="data/common/signs-guide.js"></script>
+  <script src="data/common/signs-work-zone.js"></script>
+  <script src="data/common/signs-foundations.js"></script>
+  <script src="data/states/florida/questions.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/data-loader.js"></script>
+  <script src="js/data-validator.js?v=2.1.2"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

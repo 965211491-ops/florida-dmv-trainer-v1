@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">NO PASSING ZONE (W14-3)</title>
+  <desc id="desc">Original study reconstruction of the NO PASSING ZONE traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <path d="M16 32 184 100 16 168z" fill="#facc15" stroke="#111827" stroke-width="5"/>
+  <text x="100" y="79.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="800">NO PASSING</text><text x="100" y="107.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="800">ZONE</text>
+</svg>

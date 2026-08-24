@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">STOP (R1-1)</title>
+  <desc id="desc">Original study reconstruction of the STOP traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <path d="M63 13h74l50 50v74l-50 50H63l-50-50V63z" fill="#c81e1e" stroke="#fff" stroke-width="6"/>
+  <text x="100" y="113.0" text-anchor="middle" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="38" font-weight="800">STOP</text>
+</svg>

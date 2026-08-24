@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">DETOUR DIRECTION (M4-9)</title>
+  <desc id="desc">Original study reconstruction of the DETOUR DIRECTION traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="20" y="20" width="160" height="160" rx="10" fill="#f97316" stroke="#111827" stroke-width="5"/>
+  <text x="100" y="68.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800">DETOUR</text><g transform="translate(100 126) rotate(0)"><path d="M-48-10H15V-28L52 0 15 28V10H-48Z" fill="#111827"/></g>
+</svg>

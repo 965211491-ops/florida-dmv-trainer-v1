@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">PEDESTRIAN CROSSING (W11-2)</title>
+  <desc id="desc">Original study reconstruction of the PEDESTRIAN CROSSING traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="29" y="29" width="142" height="142" rx="8" transform="rotate(45 100 100)" fill="#b7e22d" stroke="#111827" stroke-width="5"/>
+  <g fill="#111827" stroke="#111827" stroke-width="7" stroke-linecap="round"><circle cx="104" cy="52" r="11"/><path d="M101 70 87 108l-27 28m30-31 27 35m-22-61 28 22m-31-14-25 12" fill="none"/></g>
+</svg>
