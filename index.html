@@ -10,7 +10,7 @@
   />
   <title>美国 DMV 英文驾考训练 | US DMV English Trainer</title>
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=2.1.1" />
 </head>
 <body>
   <a class="skip-link" href="#appMain">跳到主要内容</a>
@@ -137,7 +137,7 @@
 
         <button id="startRoadSignsBtn" class="feature-card feature-button" type="button">
           <span class="feature-icon feature-icon-amber" aria-hidden="true">S</span>
-          <span class="feature-copy"><span class="feature-kicker">专项训练 · FOCUS MODE</span><strong>交通标志专项</strong><span class="feature-en">Road Sign Practice</span><span id="roadSignsCardSummary">0 道题可练习</span></span>
+          <span class="feature-copy"><span class="feature-kicker">图片优先 · VISUAL FIRST</span><strong>交通标志视觉学习</strong><span class="feature-en">Road Sign Visual Practice</span><span class="visual-learning-flow">看图片 → 记颜色和形状 → 理解含义 → 文字巩固</span><span id="roadSignsCardSummary">0 张标志图可学习</span></span>
           <span class="card-arrow" aria-hidden="true">→</span>
         </button>
 
@@ -167,12 +167,28 @@
         <div class="question-progress-row"><span id="questionCounter">Question 1 / 50</span><span id="questionPercent">2%</span></div>
         <div class="progress-track" aria-hidden="true"><span id="questionProgressBar"></span></div>
         <div class="question-meta"><span id="categoryBadge" class="pill">SAFE DRIVING</span><span id="scopeBadge" class="scope-label">FLORIDA</span></div>
+        <div id="roadSignLearningGuide" class="visual-learning-guide hidden">
+          <span id="roadSignPhaseBadge" class="visual-phase-badge">阶段 1 · 视觉记忆</span>
+          <p id="roadSignPhaseText">先观察标志图片的颜色与形状，再判断它表达的含义。</p>
+        </div>
         <div id="questionImageWrap" class="question-image-wrap hidden"><img id="questionImage" src="" alt="" /></div>
         <h2 id="questionEn" class="question-en"></h2>
         <p id="questionZh" class="question-zh"></p>
         <div id="optionsContainer" class="options" role="group" aria-label="Answer choices"></div>
         <div id="feedbackBox" class="feedback hidden" aria-live="polite">
-          <strong id="feedbackTitle"></strong><p id="explanationEn"></p><p id="explanationZh"></p><div id="keywordsBox" class="keywords"></div>
+          <strong id="feedbackTitle"></strong><p id="explanationEn"></p><p id="explanationZh"></p>
+          <div id="visualMemoryReview" class="visual-memory-review hidden">
+            <div class="visual-memory-heading">
+              <img id="visualMemoryImage" src="" alt="" />
+              <div><span>视觉记忆卡 · Visual Memory</span><strong id="visualMemoryName"></strong></div>
+            </div>
+            <div class="visual-memory-grid">
+              <div><span>颜色 · Color</span><strong id="visualMemoryColors"></strong></div>
+              <div><span>形状 · Shape</span><strong id="visualMemoryShape"></strong></div>
+              <div class="visual-memory-meaning"><span>含义 · Meaning</span><strong id="visualMemoryMeaning"></strong></div>
+            </div>
+          </div>
+          <div id="keywordsBox" class="keywords"></div>
         </div>
         <div class="question-actions">
           <div id="languageControl" class="segmented-control" aria-label="Question language mode">
@@ -252,7 +268,7 @@
   <script src="data/questions.js"></script>
   <script src="data/common/questions.js"></script>
   <script src="data/knowledge/signs.js"></script>
-  <script src="data/common/sign-question-factory.js"></script>
+  <script src="data/common/sign-question-factory.js?v=2.1.1"></script>
   <script src="data/common/signs-regulatory.js"></script>
   <script src="data/common/signs-warning.js"></script>
   <script src="data/common/signs-school.js"></script>
@@ -264,8 +280,8 @@
   <script src="js/config.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/data-loader.js"></script>
-  <script src="js/data-validator.js?v=2.1.2"></script>
-  <script src="js/quiz.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/data-validator.js?v=2.1.4"></script>
+  <script src="js/quiz.js?v=2.1.1"></script>
+  <script src="js/app.js?v=2.1.1"></script>
 </body>
 </html>

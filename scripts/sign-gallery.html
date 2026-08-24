@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>V2.1 Sign Asset Gallery</title>
+  <title>V2.1.1 Sign Asset Gallery</title>
   <style>
     body { margin: 0; padding: 24px; color: #0f172a; background: #f8fafc; font: 14px/1.4 system-ui, sans-serif; }
     h1 { margin: 0 0 8px; }
@@ -16,14 +16,14 @@
   </style>
 </head>
 <body>
-  <h1>V2.1 Road Sign Assets</h1>
+  <h1>V2.1.1 Road Sign Assets</h1>
   <p>Original study reconstructions based on FHWA/MUTCD conventions; not fabrication drawings.</p>
   <main id="gallery"></main>
   <script src="../data/knowledge/signs.js"></script>
   <script>
     document.querySelector("#gallery").innerHTML = window.DMV_SIGN_KNOWLEDGE.map((sign) => `
       <article>
-        <img src="../${sign.image}?v=2.1.1" alt="${sign.imageAlt}" />
+        <img src="../${sign.image}?v=2.1.2" alt="${sign.imageAlt}" />
         <strong>${sign.name.en}</strong>
         <small>${sign.designation} · ${sign.category}</small>
       </article>

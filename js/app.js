@@ -53,6 +53,9 @@
     questionProgressBar: document.querySelector("#questionProgressBar"),
     categoryBadge: document.querySelector("#categoryBadge"),
     scopeBadge: document.querySelector("#scopeBadge"),
+    roadSignLearningGuide: document.querySelector("#roadSignLearningGuide"),
+    roadSignPhaseBadge: document.querySelector("#roadSignPhaseBadge"),
+    roadSignPhaseText: document.querySelector("#roadSignPhaseText"),
     questionImageWrap: document.querySelector("#questionImageWrap"),
     questionImage: document.querySelector("#questionImage"),
     questionEn: document.querySelector("#questionEn"),
@@ -62,6 +65,12 @@
     feedbackTitle: document.querySelector("#feedbackTitle"),
     explanationEn: document.querySelector("#explanationEn"),
     explanationZh: document.querySelector("#explanationZh"),
+    visualMemoryReview: document.querySelector("#visualMemoryReview"),
+    visualMemoryImage: document.querySelector("#visualMemoryImage"),
+    visualMemoryName: document.querySelector("#visualMemoryName"),
+    visualMemoryColors: document.querySelector("#visualMemoryColors"),
+    visualMemoryShape: document.querySelector("#visualMemoryShape"),
+    visualMemoryMeaning: document.querySelector("#visualMemoryMeaning"),
     keywordsBox: document.querySelector("#keywordsBox"),
     languageControl: document.querySelector("#languageControl"),
     languageButtons: [...document.querySelectorAll(".language-btn")],
@@ -101,7 +110,7 @@
   const MODE_DETAILS = Object.freeze({
     practice: { title: "Random Practice", kicker: "BILINGUAL STUDY", defaultCount: 50 },
     wrong: { title: "Wrong Answer Practice", kicker: "SMART REVIEW", defaultCount: 50 },
-    road_sign: { title: "Road Sign Practice", kicker: "FOCUS MODE", defaultCount: 20 },
+    road_sign: { title: "Road Sign Visual Practice", kicker: "VISUAL FIRST", defaultCount: 20 },
     exam: { title: "Exam Simulator", kicker: "ENGLISH ONLY", defaultCount: config.EXAM_QUESTION_COUNT }
   });
 
@@ -184,7 +193,8 @@
   function renderDashboard() {
     const stateConfig = config.STATES.find((state) => state.code === appState.selectedState);
     const stats = getCurrentStats();
-    const roadSigns = data.getRoadSignQuestions(appState.questionBank).length;
+    const roadSignQuestions = data.getRoadSignQuestions(appState.questionBank);
+    const roadSignImages = roadSignQuestions.filter((question) => question.type === "image" && question.image).length;
 
     el.dashboardTitle.textContent = stateConfig?.nameZh || appState.selectedState;
     el.dashboardEnglishName.textContent = stateConfig?.name || appState.selectedState;
@@ -194,7 +204,7 @@
     el.dashboardPracticed.textContent = stats.practiced;
     el.wrongCardSummary.innerHTML = `${stats.wrong} 道题需要复习<small>${stats.wrong} ${stats.wrong === 1 ? "question" : "questions"} to review</small>`;
     el.masteredCardSummary.innerHTML = `已掌握 ${stats.mastered} / ${stats.totalQuestions}<small>${stats.mastered} of ${stats.totalQuestions} mastered</small>`;
-    el.roadSignsCardSummary.innerHTML = `${roadSigns} 道题可练习<small>${roadSigns} questions available</small>`;
+    el.roadSignsCardSummary.innerHTML = `${roadSignImages} 张标志图可学习<small>每轮约 80% 图片学习 · 20% 文字巩固</small>`;
   }
 
   function getQuizPool(mode) {
@@ -275,6 +285,19 @@
     el.questionZh.textContent = question.question.zh;
     el.liveScoreValue.textContent = session.score;
 
+    const isRoadSignStudy = session.mode === "road_sign";
+    const isVisualPhase = isRoadSignStudy && question.studyPhase === "visual";
+    el.roadSignLearningGuide.classList.toggle("hidden", !isRoadSignStudy);
+    el.questionImageWrap.classList.toggle("visual-primary", isVisualPhase);
+    if (isRoadSignStudy) {
+      el.roadSignPhaseBadge.textContent = isVisualPhase
+        ? "阶段 1 · 视觉记忆"
+        : "阶段 2 · 文字巩固";
+      el.roadSignPhaseText.textContent = isVisualPhase
+        ? "先观察标志图片的颜色与形状，再判断它表达的含义。"
+        : "现在用文字回忆刚才看过的标志；作答后会再次显示图片帮助巩固。";
+    }
+
     if (question.image) {
       el.questionImage.src = question.image;
       el.questionImage.alt = question.imageAlt || `${question.categoryLabel} question image`;
@@ -313,6 +336,9 @@
     el.feedbackTitle.textContent = "";
     el.explanationEn.textContent = "";
     el.explanationZh.textContent = "";
+    el.visualMemoryReview.classList.add("hidden");
+    el.visualMemoryImage.removeAttribute("src");
+    el.visualMemoryImage.alt = "";
     el.keywordsBox.innerHTML = "";
     el.nextBtn.classList.add("hidden");
     applyLanguageMode();
@@ -351,6 +377,7 @@
     el.feedbackTitle.textContent = result.isCorrect ? "✓ Correct · 回答正确" : "✕ Incorrect · 回答错误";
     el.explanationEn.textContent = question.explanation.en;
     el.explanationZh.textContent = question.explanation.zh;
+    renderVisualMemory(question);
     renderKeywords(question);
     applyLanguageMode();
   }
@@ -363,6 +390,24 @@
       chip.textContent = appState.session.bilingual ? `${pair.en} = ${pair.zh}` : pair.en;
       el.keywordsBox.appendChild(chip);
     });
+  }
+
+  function renderVisualMemory(question) {
+    const memory = question.visualMemory;
+    if (!memory || question.category !== "road_sign") {
+      el.visualMemoryReview.classList.add("hidden");
+      return;
+    }
+
+    const bilingual = appState.session?.bilingual;
+    const pairText = (pair) => bilingual && pair.zh ? `${pair.en} · ${pair.zh}` : pair.en;
+    el.visualMemoryImage.src = memory.image;
+    el.visualMemoryImage.alt = memory.imageAlt || `${memory.name.en} traffic sign`;
+    el.visualMemoryName.textContent = pairText(memory.name);
+    el.visualMemoryColors.textContent = memory.colors.map(pairText).join(" + ");
+    el.visualMemoryShape.textContent = pairText(memory.shape);
+    el.visualMemoryMeaning.textContent = pairText(memory.meaning);
+    el.visualMemoryReview.classList.remove("hidden");
   }
 
   function setLanguageMode(language) {
@@ -379,7 +424,10 @@
     el.questionZh.classList.toggle("hidden", !bilingual);
     el.optionsContainer.querySelectorAll(".option-zh").forEach((node) => node.classList.toggle("hidden", !bilingual));
     el.explanationZh.classList.toggle("hidden", !bilingual);
-    if (appState.currentAnswer && session.immediateFeedback) renderKeywords(appState.currentAnswer.question);
+    if (appState.currentAnswer && session.immediateFeedback) {
+      renderVisualMemory(appState.currentAnswer.question);
+      renderKeywords(appState.currentAnswer.question);
+    }
   }
 
   function nextQuestion() {
@@ -563,7 +611,10 @@
       currentIndex: appState.session?.currentIndex ?? null,
       total: appState.session?.total ?? null,
       score: appState.session?.score ?? null,
-      bilingual: appState.session?.bilingual ?? null
+      bilingual: appState.session?.bilingual ?? null,
+      currentQuestionType: appState.session?.currentQuestion?.type || null,
+      studyPhase: appState.session?.currentQuestion?.studyPhase || null,
+      hasQuestionImage: Boolean(appState.session?.currentQuestion?.image)
     })
   });
 

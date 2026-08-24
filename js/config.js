@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const APP_VERSION = "2.1.0";
+  const APP_VERSION = "2.1.1";
 
   const STATES = [
     { code: "FL", name: "Florida", nameZh: "佛罗里达州", available: true },

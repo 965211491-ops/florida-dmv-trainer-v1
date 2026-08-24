@@ -364,6 +364,7 @@ button.state-card:not(:disabled):hover {
 .feature-copy p { margin: 8px 0 0; }
 .feature-zh { display: block; margin: 4px 0; color: var(--primary-dark); font-weight: 750; }
 .feature-en { display: block; margin: 4px 0; color: var(--primary-dark); font-size: 13px; font-weight: 650; }
+.visual-learning-flow { display: block; margin: 8px 0 4px; color: #92400e !important; font-size: 12px !important; font-weight: 800; }
 .feature-copy small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 550; }
 .card-arrow { color: var(--primary); font-size: 22px; }
 .exam-card { border-color: #bfd1f5; background: #f8fbff; }
@@ -437,8 +438,13 @@ select {
 .question-meta { align-items: flex-start; margin: 22px 0 0; }
 .pill { display: inline-flex; padding: 6px 9px; border-radius: 999px; color: var(--primary-dark); background: var(--primary-soft); font-size: 10px; font-weight: 900; letter-spacing: 0.05em; }
 .scope-label { color: var(--muted); font-size: 10px; font-weight: 850; letter-spacing: 0.08em; }
+.visual-learning-guide { display: grid; gap: 8px; margin: 15px 0 0; padding: 13px 15px; border: 1px solid #f5d58a; border-radius: 14px; background: #fffbeb; }
+.visual-learning-guide p { margin: 0; color: #78350f; font-size: 13px; line-height: 1.55; }
+.visual-phase-badge { justify-self: start; padding: 5px 9px; border-radius: 999px; color: #92400e; background: #fef3c7; font-size: 10px; font-weight: 900; letter-spacing: 0.05em; }
 .question-image-wrap { display: grid; max-height: 270px; margin: 22px 0; place-items: center; padding: 18px; border: 1px solid var(--border); border-radius: 16px; background: var(--slate-soft); }
 .question-image-wrap img { display: block; width: auto; max-width: 100%; height: auto; max-height: 230px; object-fit: contain; }
+.question-image-wrap.visual-primary { max-height: 360px; padding: 22px; border: 2px solid #f0c96a; background: linear-gradient(145deg, #fffef9, #fffbeb); box-shadow: 0 12px 28px rgba(146, 64, 14, 0.09); }
+.question-image-wrap.visual-primary img { max-height: 310px; }
 .question-en { margin: 22px 0 10px; font-size: clamp(23px, 6vw, 34px); line-height: 1.35; }
 .question-zh { margin: 0 0 24px; color: #475569; font-size: 16px; line-height: 1.65; }
 .options { display: grid; gap: 11px; }
@@ -475,6 +481,15 @@ select {
 .feedback.correct-feedback { border-color: #b9e6c9; background: var(--success-soft); }
 .feedback.wrong-feedback { border-color: #fecdd3; background: var(--error-soft); }
 .feedback p { margin: 9px 0 0; line-height: 1.65; }
+.visual-memory-review { margin-top: 16px; padding: 14px; border: 1px solid #f1d18a; border-radius: 14px; background: rgba(255, 255, 255, 0.78); }
+.visual-memory-heading { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 13px; align-items: center; }
+.visual-memory-heading img { display: block; width: 68px; height: 68px; padding: 5px; border: 1px solid var(--border); border-radius: 12px; object-fit: contain; background: white; }
+.visual-memory-heading span,
+.visual-memory-grid span { display: block; color: var(--muted); font-size: 10px; font-weight: 850; letter-spacing: 0.04em; }
+.visual-memory-heading strong { display: block; margin-top: 4px; font-size: 17px; line-height: 1.35; }
+.visual-memory-grid { display: grid; gap: 8px; margin-top: 12px; }
+.visual-memory-grid > div { padding: 10px; border-radius: 10px; background: #fff; }
+.visual-memory-grid strong { display: block; margin-top: 4px; font-size: 13px; line-height: 1.5; }
 .keywords { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
 .keyword-chip { padding: 6px 9px; border: 1px solid var(--border); border-radius: 999px; color: #334155; background: white; font-size: 12px; }
 .question-actions { align-items: stretch; flex-direction: column; margin-top: 20px; }
@@ -543,6 +558,8 @@ select {
   .question-card,
   .result-card,
   .mastery-panel { padding: 30px; }
+  .visual-memory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .visual-memory-meaning { grid-column: 1 / -1; }
   .question-actions { flex-direction: row; align-items: center; }
   .segmented-control { width: 270px; }
   .question-actions .primary-btn { margin-left: auto; }

@@ -25,13 +25,40 @@
     };
   }
 
+  function buildVisualFirstRoadSignSet(questions, count) {
+    const total = Math.min(count, questions.length);
+    const imagePool = shuffle(questions.filter((question) => question.type === "image" && question.image));
+    const textPool = shuffle(questions.filter((question) => question.type !== "image" || !question.image));
+    const imageTarget = Math.min(imagePool.length, Math.ceil(total * 0.8));
+    const selectedImages = imagePool.slice(0, imageTarget);
+    const selectedKnowledgeIds = new Set(selectedImages.map((question) => question.knowledgeId));
+    const linkedText = textPool.filter((question) => selectedKnowledgeIds.has(question.knowledgeId));
+    const otherText = textPool.filter((question) => !selectedKnowledgeIds.has(question.knowledgeId));
+    const selectedText = [...linkedText, ...otherText].slice(0, total - selectedImages.length);
+    const selectedIds = new Set([...selectedImages, ...selectedText].map((question) => question.id));
+    const fallback = shuffle(questions)
+      .filter((question) => !selectedIds.has(question.id))
+      .slice(0, total - selectedImages.length - selectedText.length);
+
+    return [
+      ...selectedImages.map((question) => ({ ...question, studyPhase: "visual" })),
+      ...selectedText.map((question) => ({ ...question, studyPhase: "reinforcement" })),
+      ...fallback.map((question) => ({
+        ...question,
+        studyPhase: question.image ? "visual" : "reinforcement"
+      }))
+    ];
+  }
+
   class QuizSession {
     constructor({ mode, questions, count, bilingual = true }) {
       this.mode = mode;
       this.immediateFeedback = mode !== "exam";
       this.bilingual = mode === "exam" ? false : bilingual;
-      this.questions = shuffle(questions)
-        .slice(0, Math.min(count, questions.length))
+      const selectedQuestions = mode === "road_sign"
+        ? buildVisualFirstRoadSignSet(questions, Math.min(count, questions.length))
+        : shuffle(questions).slice(0, Math.min(count, questions.length));
+      this.questions = selectedQuestions
         .map(shuffleQuestionOptions);
       this.currentIndex = 0;
       this.score = 0;
@@ -91,5 +118,10 @@
     }
   }
 
-  window.DMV_QUIZ = Object.freeze({ QuizSession, shuffle, shuffleQuestionOptions });
+  window.DMV_QUIZ = Object.freeze({
+    QuizSession,
+    shuffle,
+    shuffleQuestionOptions,
+    buildVisualFirstRoadSignSet
+  });
 })();
