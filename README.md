@@ -1,4 +1,4 @@
-# US DMV English Trainer V2.1
+# US DMV English Trainer V2.1.1
 
 一个面向英语能力有限学习者的美国驾照知识考试训练器：先用中文理解规则，再通过中英对照和纯英文练习建立考试能力。
 
@@ -13,7 +13,7 @@
 - GitHub Pages
 - 无 npm、无后端、无第三方运行时依赖
 
-## V2.1 功能
+## V2.1.1 功能
 
 - Home Dashboard 与州选择，使用 `selectedState` 记住已选州
 - Florida Class E 2026 学习主页
@@ -22,13 +22,16 @@
 - Bilingual 与 English Only 显示模式
 - 错题本与 Wrong Answer Practice
 - 连续答对 3 次的 Mastery 机制
-- Road Sign Practice 分类专项
-- 84 个美国标准道路标志 Knowledge Objects
-- 184 道 FHWA / MUTCD 道路标志训练题
-  - 84 道图片识别题
-  - 84 道含义 → 标志名称题
+- Road Sign Visual Practice 图片优先专项
+  - 每轮默认约 80% 图片识别、20% 文字巩固
+  - 图片题集中在第一阶段，文字题在后续阶段复习刚看过的标志
+  - 答题后显示颜色、形状、含义和标志图片组成的视觉记忆卡
+- 106 个美国及佛州手册道路标志 Knowledge Objects
+- 228 道 FHWA / MUTCD / FLHSMV 道路标志训练题
+  - 106 道图片识别题
+  - 106 道含义 → 标志名称题
   - 16 道形状与颜色基础题
-- 84 个独立 SVG 学习图，覆盖 regulatory、warning、school、railroad、guide、work zone
+- 106 个独立 SVG 学习图，覆盖 regulatory、warning、school、railroad、guide、work zone
 - 浏览器启动时自动执行道路标志题库完整性校验
 - 50 道纯英文 Exam Simulator
   - 答题时不显示对错
@@ -52,11 +55,11 @@
 │   └── signs/
 │       ├── stop.svg
 │       ├── yield.svg
-│       └── ...                      # 84 个独立 SVG 学习图
+│       └── ...                      # 106 个独立 SVG 学习图
 ├── data/
 │   ├── questions.js                 # V1 Florida 题库，继续保留
 │   ├── knowledge/
-│   │   └── signs.js                 # 84 个道路标志知识对象
+│   │   └── signs.js                 # 106 个道路标志知识对象
 │   ├── common/
 │   │   ├── questions.js
 │   │   ├── sign-question-factory.js
@@ -82,12 +85,13 @@
     └── sign-gallery.html             # 维护用 SVG 图库预览
 ```
 
-## V2.1 官方来源与图片说明
+## V2.1.1 官方来源与图片说明
 
 道路标志名称、编号、类别、形状、颜色和含义优先依据：
 
 - FHWA《Manual on Uniform Traffic Control Devices》，11th Edition with Revision 1，December 2025
 - FHWA Standard Highway Signs 2024 phased releases（截至 2026-08-24）
+- FLHSMV《The Official Florida Driver License Handbook》，rev. 08/2023，第 43–59 页；重点对照第 46–58 页交通标志、施工、铁路和学校标志图
 
 `assets/signs/` 内 SVG 是依据上述规范重新绘制的学习图，不是用于标志制造的工程图。每个知识对象均保留 `authority`、`document`、`edition`、`section`、`page`、`verifiedDate`、`status` 和官方 URL。
 
@@ -97,7 +101,7 @@
 window.DMV_DATA_VALIDATION
 ```
 
-正常结果应为 `valid: true`，并报告 84 个知识对象、184 道新增题和 84 道图片题。
+正常结果应为 `valid: true`，并报告 106 个知识对象、228 道新增题、106 道图片题，以及 228 道具备视觉记忆数据的题目。
 
 项目使用普通 `<script>` 按顺序加载，因此可以直接双击 `index.html`，也可以通过本地静态服务器运行。
 

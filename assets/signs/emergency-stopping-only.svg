@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">EMERGENCY STOPPING ONLY (R8-4)</title>
+  <desc id="desc">Original study reconstruction of the EMERGENCY STOPPING ONLY traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="20" y="20" width="160" height="160" rx="10" fill="#ffffff" stroke="#ffffff" stroke-width="5"/>
+  <text x="100" y="65.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="800">EMERGENCY</text><text x="100" y="93.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="800">STOPPING</text><text x="100" y="121.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="800">ONLY</text>
+</svg>

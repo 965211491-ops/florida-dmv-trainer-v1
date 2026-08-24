@@ -47,6 +47,17 @@
     ];
   }
 
+  function visualMemoryFor(sign) {
+    return {
+      name: clonePair(sign.name),
+      shape: clonePair(sign.shapeLabel),
+      colors: sign.colorLabels.map(clonePair),
+      meaning: clonePair(sign.meaning),
+      image: sign.image,
+      imageAlt: sign.imageAlt
+    };
+  }
+
   function imageQuestion(sign) {
     const distractors = distractorsFor(sign, "answer");
     return {
@@ -67,6 +78,7 @@
       keywords: keywordsFor(sign),
       image: sign.image,
       imageAlt: sign.imageAlt,
+      visualMemory: visualMemoryFor(sign),
       source: sourceFor(sign)
     };
   }
@@ -91,6 +103,7 @@
       keywords: keywordsFor(sign),
       image: null,
       imageAlt: null,
+      visualMemory: visualMemoryFor(sign),
       source: sourceFor(sign)
     };
   }
@@ -123,6 +136,7 @@
       keywords,
       image: null,
       imageAlt: null,
+      visualMemory: visualMemoryFor(sign),
       source: sourceFor(sign, "2A")
     };
   }

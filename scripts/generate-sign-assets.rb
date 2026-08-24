@@ -9,6 +9,7 @@ require "fileutils"
 ROOT = File.expand_path("..", __dir__)
 KNOWLEDGE_FILE = File.join(ROOT, "data", "knowledge", "signs.js")
 OUTPUT_DIR = File.join(ROOT, "assets", "signs")
+EXPECTED_SIGN_COUNT = 106
 
 COLORS = {
   "red" => "#c81e1e",
@@ -109,6 +110,13 @@ def warning_symbol(slug)
   when "pedestrian-crossing" then pedestrian
   when "deer-crossing" then %(<path d="M48 116q12-35 45-35h25l24-22 11 8-18 27 14 29-13 7-20-24H86l-13 42H59l5-44-20 20z" fill="#{common}"/><path d="m134 63 5-21m4 20 13-16" stroke="#{common}" stroke-width="6"/>)
   when "low-clearance" then %(<path d="M52 58h96M52 142h96" stroke="#{common}" stroke-width="9"/><path d="M100 63v74m-14-62 14-20 14 20m-28 50 14 20 14-20" fill="none" stroke="#{common}" stroke-width="8"/>#{text_markup(%q(12'-6"), common, y: 109, max_lines: 1)})
+  when "exit-speed" then text_markup("EXIT", common, y: 61, max_lines: 1, max_size: 24) + text_markup("25 MPH", common, y: 126, max_lines: 2, max_size: 34)
+  when "must-turn" then arrow("left", x: 69, y: 100, color: common) + arrow("right", x: 131, y: 100, color: common)
+  when "speed-reduction-ahead" then arrow("up", x: 100, y: 58, color: common) + %(<rect x="68" y="91" width="64" height="66" rx="5" fill="#fff" stroke="#{common}" stroke-width="4"/>) + text_markup("SPEED LIMIT", common, y: 111, max_lines: 2, max_size: 13) + text_markup("45", common, y: 146, max_lines: 1, max_size: 28)
+  when "reverse-curve" then %(<path d="M86 155q0-42 30-58t0-55" fill="none" stroke="#{common}" stroke-width="13" stroke-linecap="round"/><path d="m104 46 17-25 15 28z" fill="#{common}"/>)
+  when "emergency-vehicle-crossing" then %(<rect x="45" y="82" width="110" height="54" rx="5" fill="#{common}"/><rect x="58" y="66" width="49" height="32" rx="4" fill="#{common}"/><circle cx="70" cy="142" r="11" fill="#{common}"/><circle cx="136" cy="142" r="11" fill="#{common}"/><path d="M70 59h28m-14-14v28" stroke="#{common}" stroke-width="8"/>)
+  when "truck-crossing" then %(<rect x="39" y="82" width="84" height="49" rx="4" fill="#{common}"/><path d="M123 96h25l16 21v14h-41z" fill="#{common}"/><circle cx="68" cy="139" r="11" fill="#{common}"/><circle cx="142" cy="139" r="11" fill="#{common}"/>)
+  when "drawbridge-ahead" then text_markup("DRAW BRIDGE", common, y: 105, max_lines: 1, max_size: 20)
   else nil
   end
 end
@@ -119,6 +127,7 @@ def custom_content(sign, foreground)
   return warning if warning
 
   case slug
+  when "all-way-stop" then text_markup("STOP", "#fff", y: 86, max_lines: 1, max_size: 36) + text_markup("ALL WAY", "#111827", y: 169, max_lines: 1, max_size: 18)
   when "yield" then %(<path d="M100 157 30 35h140z" fill="#fff" stroke="#fff" stroke-width="5"/>#{text_markup("YIELD", "#c81e1e", y: 98, max_lines: 1)})
   when "no-right-turn" then prohibition(%(<path d="M82 145V93q0-31 34-31h22" fill="none" stroke="#111827" stroke-width="13"/><path d="m131 44 27 18-27 18z" fill="#111827"/>))
   when "no-left-turn" then prohibition(%(<path d="M118 145V93q0-31-34-31H62" fill="none" stroke="#111827" stroke-width="13"/><path d="m69 44-27 18 27 18z" fill="#111827"/>))
@@ -128,6 +137,11 @@ def custom_content(sign, foreground)
   when "keep-right" then arrow("right", x: 100, y: 100)
   when "keep-left" then arrow("left", x: 100, y: 100)
   when "two-way-left-turn-only" then %(<path d="M76 155V68q0-24 22-24h18" fill="none" stroke="#111827" stroke-width="12"/><path d="m111 28 27 16-27 16z"/><path d="M124 45v87q0 24-22 24H84" fill="none" stroke="#111827" stroke-width="12"/><path d="m89 140-27 16 27 16z"/>)
+  when "turn-lanes" then arrow("left", x: 62, y: 98) + arrow("up", x: 119, y: 74) + arrow("left", x: 137, y: 119) + text_markup("ONLY", foreground, y: 165, max_lines: 1, max_size: 18)
+  when "begin-right-turn-lane" then text_markup("BEGIN RIGHT TURN LANE", foreground, y: 82, max_lines: 4, max_size: 21) + arrow("down", x: 108, y: 146)
+  when "restricted-lane-ahead" then text_markup("RESTRICTED LANE", foreground, y: 59, max_lines: 2, max_size: 17) + %(<path d="M100 82 117 111 100 140 83 111z" fill="none" stroke="#{foreground}" stroke-width="8"/>) + text_markup("AHEAD", foreground, y: 169, max_lines: 1, max_size: 17)
+  when "disabled-parking" then %(<rect x="25" y="25" width="150" height="82" rx="5" fill="#1d4ed8"/><circle cx="101" cy="48" r="11" fill="#fff"/><path d="M96 62v42h32m-30-25h29l18 45m-47-20a31 31 0 1 0 42 25" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>) + text_markup("PERMIT ONLY", "#111827", y: 161, max_lines: 2, max_size: 17)
+  when "no-parking-on-pavement" then text_markup("NO PARKING ON PAVEMENT", "#c81e1e", y: 105, max_lines: 4, max_size: 25)
   when "do-not-enter" then %(<rect x="39" y="86" width="122" height="28" rx="4" fill="#fff"/>)
   when "no-bicycles" then prohibition(bicycle)
   when "no-pedestrians" then prohibition(pedestrian)
@@ -152,6 +166,9 @@ def custom_content(sign, foreground)
 end
 
 def shape_markup(sign, background)
+  if sign.slug == "all-way-stop"
+    return %(<path d="M68 12h64l43 43v64l-43 43H68l-43-43V55z" fill="#c81e1e" stroke="#fff" stroke-width="5"/><rect x="48" y="145" width="104" height="38" rx="6" fill="#fff" stroke="#c81e1e" stroke-width="5"/>)
+  end
   if sign.slug == "interstate-route"
     return %(<path d="M26 35q74-25 148 0v65q0 54-74 86-74-32-74-86z" fill="#1d4ed8" stroke="#fff" stroke-width="6"/><path d="M31 38q69-22 138 0v38H31z" fill="#c81e1e"/>)
   end
@@ -184,7 +201,7 @@ def background_for(sign)
     return COLORS["brown"] if sign.slug == "recreation-area"
     return COLORS["blue"]
   end
-  return COLORS["red"] if %w[stop yield do-not-enter wrong-way].include?(sign.slug)
+  return COLORS["red"] if %w[stop all-way-stop yield do-not-enter wrong-way].include?(sign.slug)
 
   COLORS["white"]
 end
@@ -222,7 +239,7 @@ def render_svg(sign)
 end
 
 signs = read_signs
-abort "Expected 84 sign records, found #{signs.length}" unless signs.length == 84
+abort "Expected #{EXPECTED_SIGN_COUNT} sign records, found #{signs.length}" unless signs.length == EXPECTED_SIGN_COUNT
 
 FileUtils.mkdir_p(OUTPUT_DIR)
 signs.each do |sign|

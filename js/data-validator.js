@@ -51,6 +51,8 @@
       if (!item.meaning?.en || !item.meaning?.zh) errors.push(`Missing knowledge meaning: ${item.id}`);
       if (!item.image) errors.push(`Missing knowledge image: ${item.id}`);
       if (!item.source?.authority || !item.source?.document || !item.source?.edition) errors.push(`Missing knowledge source: ${item.id}`);
+      if (item.source?.authority === "FLHSMV"
+        && (!Number.isInteger(item.source.page) || item.source.page < 43 || item.source.page > 59)) errors.push(`Invalid FLHSMV handbook page: ${item.id}`);
       if (!item.source?.verifiedDate) warnings.push(`Source date needs review: ${item.id}`);
     });
 
@@ -70,6 +72,11 @@
         || question.correctIndex >= (question.options?.length || 0)) errors.push(`Invalid correctIndex: ${question.id}`);
       if (!question.explanation?.en || !question.explanation?.zh) errors.push(`Missing bilingual explanation: ${question.id}`);
       if (!Array.isArray(question.keywords) || question.keywords.length < 1 || question.keywords.length > 3) errors.push(`Keywords must contain 1-3 items: ${question.id}`);
+      if (!question.visualMemory?.shape?.en
+        || !Array.isArray(question.visualMemory?.colors)
+        || !question.visualMemory.colors.length
+        || !question.visualMemory?.meaning?.en
+        || !question.visualMemory?.image) errors.push(`Missing visual-memory data: ${question.id}`);
       if (!question.source?.authority || !question.source?.document || !question.source?.edition) errors.push(`Missing source: ${question.id}`);
     });
 
@@ -81,7 +88,13 @@
       counts[item.category] = (counts[item.category] || 0) + 1;
       return counts;
     }, {});
+    const sources = knowledge.reduce((counts, item) => {
+      const authority = item.source?.authority || "unknown";
+      counts[authority] = (counts[authority] || 0) + 1;
+      return counts;
+    }, {});
     const imageQuestions = signQuestions.filter((question) => question.type === "image").length;
+    const visualMemoryQuestions = signQuestions.filter((question) => question.visualMemory?.image).length;
 
     return Object.freeze({
       valid: errors.length === 0,
@@ -91,7 +104,9 @@
         knowledgeObjects: knowledge.length,
         signQuestions: signQuestions.length,
         imageQuestions,
-        categories: Object.freeze(categories)
+        visualMemoryQuestions,
+        categories: Object.freeze(categories),
+        sources: Object.freeze(sources)
       })
     });
   }
