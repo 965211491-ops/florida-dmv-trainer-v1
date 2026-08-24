@@ -111,7 +111,8 @@
         section: source.section || null,
         page: source.page ?? null,
         verifiedDate: source.verifiedDate || null,
-        status: source.status || null
+        status: source.status || null,
+        url: source.url || null
       };
     }
 
@@ -122,7 +123,8 @@
       section: null,
       page: legacyQuestion.sourcePage ?? null,
       verifiedDate: null,
-      status: legacyQuestion.sourceStatus || "practice-paraphrase"
+      status: legacyQuestion.sourceStatus || "practice-paraphrase",
+      url: null
     };
   }
 

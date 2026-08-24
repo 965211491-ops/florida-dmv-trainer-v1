@@ -1,4 +1,4 @@
-# US DMV English Trainer V2
+# US DMV English Trainer V2.1
 
 一个面向英语能力有限学习者的美国驾照知识考试训练器：先用中文理解规则，再通过中英对照和纯英文练习建立考试能力。
 
@@ -13,7 +13,7 @@
 - GitHub Pages
 - 无 npm、无后端、无第三方运行时依赖
 
-## V2 功能
+## V2.1 功能
 
 - Home Dashboard 与州选择，使用 `selectedState` 记住已选州
 - Florida Class E 2026 学习主页
@@ -23,6 +23,13 @@
 - 错题本与 Wrong Answer Practice
 - 连续答对 3 次的 Mastery 机制
 - Road Sign Practice 分类专项
+- 84 个美国标准道路标志 Knowledge Objects
+- 184 道 FHWA / MUTCD 道路标志训练题
+  - 84 道图片识别题
+  - 84 道含义 → 标志名称题
+  - 16 道形状与颜色基础题
+- 84 个独立 SVG 学习图，覆盖 regulatory、warning、school、railroad、guide、work zone
+- 浏览器启动时自动执行道路标志题库完整性校验
 - 50 道纯英文 Exam Simulator
   - 答题时不显示对错
   - 完成后统一评分
@@ -44,11 +51,22 @@
 │   ├── illustrations/
 │   └── signs/
 │       ├── stop.svg
-│       └── yield.svg
+│       ├── yield.svg
+│       └── ...                      # 84 个独立 SVG 学习图
 ├── data/
 │   ├── questions.js                 # V1 Florida 题库，继续保留
+│   ├── knowledge/
+│   │   └── signs.js                 # 84 个道路标志知识对象
 │   ├── common/
-│   │   └── questions.js             # 未来通用/标准化题库
+│   │   ├── questions.js
+│   │   ├── sign-question-factory.js
+│   │   ├── signs-regulatory.js
+│   │   ├── signs-warning.js
+│   │   ├── signs-school.js
+│   │   ├── signs-railroad.js
+│   │   ├── signs-guide.js
+│   │   ├── signs-work-zone.js
+│   │   └── signs-foundations.js
 │   └── states/
 │       └── florida/
 │           └── questions.js         # 未来经核验的 Florida 专属题
@@ -56,9 +74,30 @@
     ├── config.js                     # 版本、州配置、考试参数
     ├── storage.js                    # localStorage、迁移、统计
     ├── data-loader.js                # 题库合并与 schema 归一化
+    ├── data-validator.js             # ID、翻译、来源、选项等自动校验
     ├── quiz.js                       # 抽题、选项洗牌、答题 session
     └── app.js                        # 页面导航与 UI 渲染
+└── scripts/
+    ├── generate-sign-assets.rb       # 从知识库元数据生成 SVG 学习图
+    └── sign-gallery.html             # 维护用 SVG 图库预览
 ```
+
+## V2.1 官方来源与图片说明
+
+道路标志名称、编号、类别、形状、颜色和含义优先依据：
+
+- FHWA《Manual on Uniform Traffic Control Devices》，11th Edition with Revision 1，December 2025
+- FHWA Standard Highway Signs 2024 phased releases（截至 2026-08-24）
+
+`assets/signs/` 内 SVG 是依据上述规范重新绘制的学习图，不是用于标志制造的工程图。每个知识对象均保留 `authority`、`document`、`edition`、`section`、`page`、`verifiedDate`、`status` 和官方 URL。
+
+页面加载后可以在浏览器控制台查看：
+
+```js
+window.DMV_DATA_VALIDATION
+```
+
+正常结果应为 `valid: true`，并报告 84 个知识对象、184 道新增题和 84 道图片题。
 
 项目使用普通 `<script>` 按顺序加载，因此可以直接双击 `index.html`，也可以通过本地静态服务器运行。
 
@@ -209,19 +248,18 @@ Florida 目前还会额外加载原有 `data/questions.js`，用于兼容 V1 的
 
 ## Git workflow
 
-查看修改：
+V2.1 在长期保留分支中开发：
 
 ```bash
-git status
-git diff
+git switch v2.1-road-signs
 ```
 
-测试完成后再提交：
+完成并通过测试后提交和推送该分支，再合并到 `main`。合并完成后仍保留 `v2.1-road-signs`，用于版本回溯：
 
 ```bash
 git add .
-git commit -m "Build US DMV English Trainer V2"
-git push origin main
+git commit -m "Expand the V2.1 US road sign bank"
+git push origin v2.1-road-signs
 ```
 
 ## GitHub Pages

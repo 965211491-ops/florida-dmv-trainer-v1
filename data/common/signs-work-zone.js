@@ -1,0 +1,3 @@
+window.COMMON_QUESTIONS.push(
+  ...window.DMV_SIGN_FACTORY.forCategory("work_zone")
+);

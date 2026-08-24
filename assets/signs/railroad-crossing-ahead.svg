@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">RAILROAD CROSSING AHEAD (W10-1)</title>
+  <desc id="desc">Original study reconstruction of the RAILROAD CROSSING AHEAD traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <circle cx="100" cy="100" r="84" fill="#facc15" stroke="#fff" stroke-width="6"/>
+  <text x="100" y="103.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800">X</text><text x="100" y="143.0" text-anchor="middle" fill="#111827" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800">R R</text>
+</svg>

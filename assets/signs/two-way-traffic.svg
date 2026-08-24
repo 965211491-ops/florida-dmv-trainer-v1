@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">TWO-WAY TRAFFIC (W6-3)</title>
+  <desc id="desc">Original study reconstruction of the TWO-WAY TRAFFIC traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="29" y="29" width="142" height="142" rx="8" transform="rotate(45 100 100)" fill="#facc15" stroke="#111827" stroke-width="5"/>
+  <path d="M75 151V50m50-1v101" stroke="#111827" stroke-width="13"/><path d="m60 57 15-27 15 27zm50 86 15 27 15-27z" fill="#111827"/>
+</svg>

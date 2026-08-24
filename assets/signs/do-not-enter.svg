@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">DO NOT ENTER (R5-1)</title>
+  <desc id="desc">Original study reconstruction of the DO NOT ENTER traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <circle cx="100" cy="100" r="84" fill="#c81e1e" stroke="#fff" stroke-width="6"/>
+  <rect x="39" y="86" width="122" height="28" rx="4" fill="#fff"/>
+</svg>

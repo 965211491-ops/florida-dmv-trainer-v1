@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">CIRCULAR INTERSECTION (W2-6)</title>
+  <desc id="desc">Original study reconstruction of the CIRCULAR INTERSECTION traffic sign, based on FHWA MUTCD conventions. Not a fabrication drawing.</desc>
+  <rect width="200" height="200" rx="16" fill="#f8fafc"/>
+  <rect x="29" y="29" width="142" height="142" rx="8" transform="rotate(45 100 100)" fill="#facc15" stroke="#111827" stroke-width="5"/>
+  <g fill="none" stroke="#111827" stroke-width="10"><path d="M63 74a47 47 0 0 1 69-8"/><path d="m124 47 25 22-30 9" fill="#111827"/><path d="M139 100a47 47 0 0 1-38 46"/><path d="m116 155-30-8 20-24" fill="#111827"/><path d="M67 132a47 47 0 0 1-7-41"/><path d="m43 97 15-28 16 27" fill="#111827"/></g>
+</svg>
