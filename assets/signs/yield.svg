@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 160" role="img" aria-labelledby="title desc">
+  <title id="title">Yield sign</title>
+  <desc id="desc">A red and white triangular yield sign for future image-question support.</desc>
+  <path d="M90 151 7 11h166z" fill="#dc2626" stroke="#dc2626" stroke-linejoin="round" stroke-width="8"/>
+  <path d="M90 132 27 25h126z" fill="#fff" stroke="#fff" stroke-linejoin="round" stroke-width="3"/>
+  <text x="90" y="76" text-anchor="middle" fill="#dc2626" font-family="Arial, sans-serif" font-size="25" font-weight="800">YIELD</text>
+</svg>

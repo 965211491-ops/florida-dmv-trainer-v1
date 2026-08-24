@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">Stop sign</title>
+  <desc id="desc">A red octagonal stop sign used as a decorative study icon.</desc>
+  <path d="M48 8h64l40 40v64l-40 40H48L8 112V48z" fill="#dc2626"/>
+  <path d="M52 17h56l35 35v56l-35 35H52l-35-35V52z" fill="none" stroke="#fff" stroke-width="6"/>
+  <text x="80" y="94" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="43" font-weight="800">STOP</text>
+</svg>
