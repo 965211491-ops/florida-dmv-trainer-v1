@@ -50,6 +50,76 @@
     ];
   }
 
+  function takeUnique(pool, count, usedIds) {
+    const selected = shuffle(pool).filter((question) => !usedIds.has(question.id)).slice(0, count);
+    selected.forEach((question) => usedIds.add(question.id));
+    return selected;
+  }
+
+  function buildBalancedTrafficControls(questions, count, roadSignMax) {
+    const usedIds = new Set();
+    const selected = [];
+    const targets = [
+      ["road_sign", Math.min(4, roadSignMax)],
+      ["road_marking", 4],
+      ["traffic_signal", 4],
+      ["lane_signal", 2]
+    ];
+
+    targets.forEach(([category, target]) => {
+      selected.push(...takeUnique(questions.filter((question) => question.category === category), target, usedIds));
+    });
+
+    const contextual = questions.filter((question) =>
+      ["railroad", "school_zone", "pedestrian"].includes(question.category)
+    );
+    selected.push(...takeUnique(contextual, Math.max(0, count - selected.length), usedIds));
+
+    if (selected.length < count) {
+      const currentSignCount = selected.filter((question) => question.category === "road_sign").length;
+      const allowedExtraSigns = Math.max(0, roadSignMax - currentSignCount);
+      const nonSigns = questions.filter((question) => question.category !== "road_sign");
+      selected.push(...takeUnique(nonSigns, count - selected.length, usedIds));
+      if (selected.length < count && allowedExtraSigns) {
+        selected.push(...takeUnique(
+          questions.filter((question) => question.category === "road_sign"),
+          Math.min(allowedExtraSigns, count - selected.length),
+          usedIds
+        ));
+      }
+    }
+
+    return selected.slice(0, count);
+  }
+
+  function buildBalancedExamSet(questions, blueprint = window.DMV_CONFIG?.FL_EXAM_BLUEPRINT) {
+    const plan = blueprint || { traffic_laws: 17, safe_driving: 17, traffic_controls: 16, roadSignMax: 6 };
+    const usedIds = new Set();
+    const laws = takeUnique(
+      questions.filter((question) => question.examDomain === "traffic_laws"),
+      plan.traffic_laws,
+      usedIds
+    );
+    const safeDriving = takeUnique(
+      questions.filter((question) => question.examDomain === "safe_driving"),
+      plan.safe_driving,
+      usedIds
+    );
+    const controls = buildBalancedTrafficControls(
+      questions.filter((question) => question.examDomain === "traffic_controls" && !usedIds.has(question.id)),
+      plan.traffic_controls,
+      plan.roadSignMax
+    );
+    controls.forEach((question) => usedIds.add(question.id));
+
+    const selected = [...laws, ...safeDriving, ...controls];
+    const expected = plan.traffic_laws + plan.safe_driving + plan.traffic_controls;
+    if (selected.length < expected) {
+      selected.push(...takeUnique(questions, expected - selected.length, usedIds));
+    }
+    return shuffle(selected.slice(0, expected));
+  }
+
   class QuizSession {
     constructor({ mode, questions, count, bilingual = true }) {
       this.mode = mode;
@@ -57,7 +127,9 @@
       this.bilingual = mode === "exam" ? false : bilingual;
       const selectedQuestions = mode === "road_sign"
         ? buildVisualFirstRoadSignSet(questions, Math.min(count, questions.length))
-        : shuffle(questions).slice(0, Math.min(count, questions.length));
+        : mode === "exam"
+          ? buildBalancedExamSet(questions)
+          : shuffle(questions).slice(0, Math.min(count, questions.length));
       this.questions = selectedQuestions
         .map(shuffleQuestionOptions);
       this.currentIndex = 0;
@@ -122,6 +194,8 @@
     QuizSession,
     shuffle,
     shuffleQuestionOptions,
-    buildVisualFirstRoadSignSet
+    buildVisualFirstRoadSignSet,
+    buildBalancedExamSet,
+    buildBalancedTrafficControls
   });
 })();

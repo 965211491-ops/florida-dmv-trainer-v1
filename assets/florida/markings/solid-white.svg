@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Solid white lane line</title>
+  <desc id="desc">Solid white lane line</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="80" width="480" height="360" fill="#454b52"/>
+<rect x="76" width="4" height="360" fill="#cbd5e1"/>
+<rect x="560" width="4" height="360" fill="#cbd5e1"/>
+<path d="M104 0v360M536 0v360" stroke="#fff" stroke-width="8"/>
+<path d="M320 0v360" stroke="#fff" stroke-width="10"/>
+
+
+</svg>

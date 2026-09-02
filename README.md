@@ -1,4 +1,4 @@
-# US DMV English Trainer V2.1.1
+# US DMV English Trainer V2.2
 
 一个面向英语能力有限学习者的美国驾照知识考试训练器：先用中文理解规则，再通过中英对照和纯英文练习建立考试能力。
 
@@ -13,7 +13,7 @@
 - GitHub Pages
 - 无 npm、无后端、无第三方运行时依赖
 
-## V2.1.1 功能
+## V2.2 功能
 
 - Home Dashboard 与州选择，使用 `selectedState` 记住已选州
 - Florida Class E 2026 学习主页
@@ -34,9 +34,23 @@
 - 106 个独立 SVG 学习图，覆盖 regulatory、warning、school、railroad、guide、work zone
 - 浏览器启动时自动执行道路标志题库完整性校验
 - 50 道纯英文 Exam Simulator
+  - 固定使用均衡学习蓝图：Traffic Laws 17、Safe Driving 17、Traffic Controls 16
+  - Traffic Controls 内部继续平衡标志、标线、信号灯、车道信号和铁路/学校控制
+  - 道路标志默认 4 道，硬上限 6 道，不再被大型标志题库挤占
   - 答题时不显示对错
   - 完成后统一评分
   - 当前练习通过线为 80%
+- Florida Class E Core Expansion
+  - 150 道新增 Florida 专属题：Traffic Laws 50、Safe Driving 55、Traffic Controls 45
+  - 84 / 84 个 Chapter 11 Study Guide 考点均有题目映射
+  - “官方 84 考点”页面显示题量、正确率、Not Practiced / Learning / Mastered
+  - Topic Mastered 要求完成该考点全部核心题、正确率至少 80%、且没有未解决错题
+- 27 个 Florida 交通控制原创 SVG
+  - 15 个道路标线图
+  - 9 个交通信号图
+  - 3 个车道控制信号图
+- `image_to_meaning`、`meaning_to_image`、`scenario_image`、`text` 四类题目
+- 选项对象可包含图片与替代文字；道路标线题图像比例不低于 70%
 - Progress 页面：累计答题、正确率、错题、已掌握和掌握百分比
 - V1 localStorage 数据兼容迁移
 - `image` / `scenario` 题型的响应式图片渲染支持
@@ -51,13 +65,18 @@
 ├── README.md
 ├── assets/
 │   ├── icons/
-│   ├── illustrations/
+│   ├── florida/
+│   │   ├── markings/               # 15 个原创道路标线 SVG
+│   │   ├── signals/                # 9 个原创交通信号 SVG
+│   │   └── lane-signals/           # 3 个原创车道信号 SVG
 │   └── signs/
 │       ├── stop.svg
 │       ├── yield.svg
 │       └── ...                      # 106 个独立 SVG 学习图
 ├── data/
 │   ├── questions.js                 # V1 Florida 题库，继续保留
+│   ├── coverage/
+│   │   └── florida-study-guide-84.js # 官方 84 考点覆盖矩阵
 │   ├── knowledge/
 │   │   └── signs.js                 # 106 个道路标志知识对象
 │   ├── common/
@@ -72,7 +91,10 @@
 │   │   └── signs-foundations.js
 │   └── states/
 │       └── florida/
-│           └── questions.js         # 未来经核验的 Florida 专属题
+│           ├── questions.js         # Florida 题目 factory 与来源字段
+│           ├── questions-laws.js    # Traffic Laws 50
+│           ├── questions-safe-driving.js # Safe Driving 55
+│           └── questions-controls.js # Traffic Controls 45
 └── js/
     ├── config.js                     # 版本、州配置、考试参数
     ├── storage.js                    # localStorage、迁移、统计
@@ -85,13 +107,33 @@
     └── sign-gallery.html             # 维护用 SVG 图库预览
 ```
 
-## V2.1.1 官方来源与图片说明
+## Florida Official Study Guide Coverage
+
+V2.2 以 FLHSMV《Official Florida Driver License Handbook》rev. 08/2023 第 11 章的 84 个学习考点作为覆盖架构，并对照第 3–11 章定位答案页码。覆盖矩阵保存在 `data/coverage/florida-study-guide-84.js`，每个考点记录：
+
+- 中英文自定义 topic title
+- 手册章号与页码
+- V2.2 前的 `covered` / `partial` / `missing` 审计结果
+- `traffic_laws` / `safe_driving` / `traffic_controls` 考试域
+- V2.2 目标题量
+
+84 考点是内容覆盖框架，不代表本站复制了官方问题，也不代表模拟考试蓝图是 FLHSMV 公布的正式抽题比例。
+
+## 来源核验与图片说明
 
 道路标志名称、编号、类别、形状、颜色和含义优先依据：
 
 - FHWA《Manual on Uniform Traffic Control Devices》，11th Edition with Revision 1，December 2025
 - FHWA Standard Highway Signs 2024 phased releases（截至 2026-08-24）
 - FLHSMV《The Official Florida Driver License Handbook》，rev. 08/2023，第 43–59 页；重点对照第 46–58 页交通标志、施工、铁路和学校标志图
+
+Florida V2.2 题目还记录 `studyGuideItems`、`examDomain`、`difficulty`、章、节、页码、核验日期和 `verificationStatus`。时效性法规另附 Florida Legislature 或 FLHSMV 当前官方页面：
+
+- `verified_2023_handbook_only`：已对照 08/2023 手册，但不冒充 2026 版手册
+- `verified_current`：除手册外，已于记录日期对照当前官方法规或页面
+- `needs_current_verification`：数字或规则可能变化，发布前仍需再次核验
+
+特别注意：2025 年佛州法律修改了未成年人学习驾照的驾驶教育课程要求。因此 V2.2 将未成年人 learner-license 课程与成年首次申请者的 TLSAE 要求分开处理，不沿用 2023 手册的旧概括。
 
 `assets/signs/` 内 SVG 是依据上述规范重新绘制的学习图，不是用于标志制造的工程图。每个知识对象均保留 `authority`、`document`、`edition`、`section`、`page`、`verifiedDate`、`status` 和官方 URL。
 
@@ -101,7 +143,7 @@
 window.DMV_DATA_VALIDATION
 ```
 
-正常结果应为 `valid: true`，并报告 106 个知识对象、228 道新增题、106 道图片题，以及 228 道具备视觉记忆数据的题目。
+正常结果应为 `valid: true`，并额外报告 150 道 V2.2 Florida 题、84 / 84 覆盖、三大域题量、道路标线图像比例和来源核验状态。
 
 项目使用普通 `<script>` 按顺序加载，因此可以直接双击 `index.html`，也可以通过本地静态服务器运行。
 
@@ -161,13 +203,16 @@ selectedState
   scope: "federal", // federal | multi_state_common | state
   category: "road_sign",
   subcategory: "regulatory",
-  type: "text", // text | image | scenario
+  examDomain: "traffic_controls", // traffic_laws | safe_driving | traffic_controls
+  difficulty: "basic", // basic | intermediate | application
+  studyGuideItems: [20],
+  type: "image_to_meaning", // image_to_meaning | meaning_to_image | scenario_image | text
   question: {
     en: "What does this sign mean?",
     zh: "这个交通标志是什么意思？"
   },
   options: [
-    { en: "Stop", zh: "停车" },
+    { en: "Stop", zh: "停车", image: "assets/florida/signals/steady-red.svg", imageAlt: "Steady red traffic signal" },
     { en: "Yield", zh: "让行" },
     { en: "No entry", zh: "禁止进入" },
     { en: "School zone", zh: "学校区域" }
@@ -187,8 +232,8 @@ selectedState
     edition: "11th Edition",
     section: null,
     page: null,
-    verifiedDate: null,
-    status: "verified"
+    verifiedDate: "2026-08-24",
+    verificationStatus: "verified_2023_handbook_only"
   }
 }
 ```
@@ -231,7 +276,7 @@ Scope 使用原则：
 }
 ```
 
-Renderer 对 `image` 和 `scenario` 使用同一个响应式图片区域；没有图片时保持普通文字题布局。
+Renderer 支持题干图片和四个答案选项分别带图；没有图片时保持普通文字题布局。
 
 ## 添加新州
 
@@ -252,18 +297,18 @@ Florida 目前还会额外加载原有 `data/questions.js`，用于兼容 V1 的
 
 ## Git workflow
 
-V2.1 在长期保留分支中开发：
+V2.2 在长期保留分支中开发：
 
 ```bash
-git switch v2.1-road-signs
+git switch v2.2-florida-complete
 ```
 
-完成并通过测试后提交和推送该分支，再合并到 `main`。合并完成后仍保留 `v2.1-road-signs`，用于版本回溯：
+完成并通过测试后提交和推送该分支，再合并到 `main`。合并完成后仍保留 `v2.2-florida-complete`，用于版本回溯：
 
 ```bash
 git add .
-git commit -m "Expand the V2.1 US road sign bank"
-git push origin v2.1-road-signs
+git commit -m "Expand Florida Class E coverage for V2.2"
+git push origin v2.2-florida-complete
 ```
 
 ## GitHub Pages
@@ -287,6 +332,12 @@ Settings → Pages → Deploy from a branch → main → / (root)
 - Mastered 连续 3 次与答错退出
 - Road Sign Practice 真实进入题目
 - Exam Simulator 延迟反馈、50 题、80% 判定
+- Exam Simulator 实际抽题为 17 / 17 / 16，道路标志不超过 6
+- 官方 84 考点页面与单考点练习
+- Topic Mastered 的完成度、80% 正确率和 unresolved wrong 条件
+- 题干图片、选项图片及替代文字
+- 15 / 9 / 3 个 Florida SVG 均能加载
+- 150 道新增题、84 / 84 覆盖、来源页码和核验状态校验
 - Progress 统计
 - V1 数据迁移
 - 375px、390px、430px、iPad 和桌面布局
@@ -295,6 +346,4 @@ Settings → Pages → Deploy from a branch → main → / (root)
 
 ## 后续建议
 
-- V2.1：依据 FHWA / MUTCD / Standard Highway Signs 建立官方 Road Sign Pack
-- V2.2：依据 2026 Florida Driver License Handbook、FLHSMV 学习材料和必要的 Florida Statutes 扩充 Florida 专属题库
-- Weak Vocabulary、薄弱主题循环和更多州应建立在经核验的题库来源上
+- 在 V2.2 覆盖与均衡抽题稳定后，再考虑 Weak Vocabulary、薄弱主题循环和更多州。

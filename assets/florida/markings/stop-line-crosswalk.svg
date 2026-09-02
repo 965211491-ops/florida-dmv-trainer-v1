@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Stop line and crosswalk</title>
+  <desc id="desc">Stop line and crosswalk</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="80" width="480" height="360" fill="#454b52"/>
+<rect x="76" width="4" height="360" fill="#cbd5e1"/>
+<rect x="560" width="4" height="360" fill="#cbd5e1"/>
+<path d="M104 0v360M536 0v360" stroke="#fff" stroke-width="8"/>
+
+<path d="M104 258h432" stroke="#fff" stroke-width="14"/><path d="M116 172v52m44-52v52m44-52v52m44-52v52m44-52v52m44-52v52m44-52v52m44-52v52m44-52v52m44-52v52" stroke="#fff" stroke-width="25"/>
+
+</svg>

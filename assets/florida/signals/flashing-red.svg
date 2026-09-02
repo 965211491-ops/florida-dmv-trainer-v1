@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Flashing red traffic signal</title>
+  <desc id="desc">Flashing red traffic signal</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="250" y="95" width="140" height="170" rx="28" fill="#111827"/><circle cx="320" cy="180" r="48" fill="#ef4444" stroke="#fff" stroke-width="8" stroke-dasharray="10 10"/>
+</svg>

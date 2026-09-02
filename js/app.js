@@ -24,6 +24,7 @@
     wrongView: document.querySelector("#wrongView"),
     masteredView: document.querySelector("#masteredView"),
     progressView: document.querySelector("#progressView"),
+    studyGuideView: document.querySelector("#studyGuideView"),
     brandHomeBtn: document.querySelector("#brandHomeBtn"),
     changeStateBtn: document.querySelector("#changeStateBtn"),
     stateCards: document.querySelector("#stateCards"),
@@ -36,6 +37,7 @@
     wrongCardSummary: document.querySelector("#wrongCardSummary"),
     masteredCardSummary: document.querySelector("#masteredCardSummary"),
     roadSignsCardSummary: document.querySelector("#roadSignsCardSummary"),
+    studyGuideCardSummary: document.querySelector("#studyGuideCardSummary"),
     practiceCount: document.querySelector("#practiceCount"),
     startPracticeBtn: document.querySelector("#startPracticeBtn"),
     openWrongBtn: document.querySelector("#openWrongBtn"),
@@ -43,6 +45,7 @@
     startRoadSignsBtn: document.querySelector("#startRoadSignsBtn"),
     startExamBtn: document.querySelector("#startExamBtn"),
     openProgressBtn: document.querySelector("#openProgressBtn"),
+    openStudyGuideBtn: document.querySelector("#openStudyGuideBtn"),
     exitQuizBtn: document.querySelector("#exitQuizBtn"),
     quizModeKicker: document.querySelector("#quizModeKicker"),
     quizModeTitle: document.querySelector("#quizModeTitle"),
@@ -86,6 +89,7 @@
     correctResult: document.querySelector("#correctResult"),
     incorrectResult: document.querySelector("#incorrectResult"),
     accuracyResult: document.querySelector("#accuracyResult"),
+    examDomainBreakdown: document.querySelector("#examDomainBreakdown"),
     restartBtn: document.querySelector("#restartBtn"),
     resultWrongBtn: document.querySelector("#resultWrongBtn"),
     homeActions: [...document.querySelectorAll(".home-action")],
@@ -103,6 +107,11 @@
     masteryBar: document.querySelector("#masteryBar"),
     masteryDetail: document.querySelector("#masteryDetail"),
     resetProgressBtn: document.querySelector("#resetProgressBtn"),
+    studyGuideCovered: document.querySelector("#studyGuideCovered"),
+    studyGuideNotPracticed: document.querySelector("#studyGuideNotPracticed"),
+    studyGuideLearning: document.querySelector("#studyGuideLearning"),
+    studyGuideMastered: document.querySelector("#studyGuideMastered"),
+    studyGuideList: document.querySelector("#studyGuideList"),
     versionText: document.querySelector("#versionText"),
     toast: document.querySelector("#toast")
   };
@@ -111,6 +120,7 @@
     practice: { title: "Random Practice", kicker: "BILINGUAL STUDY", defaultCount: 50 },
     wrong: { title: "Wrong Answer Practice", kicker: "SMART REVIEW", defaultCount: 50 },
     road_sign: { title: "Road Sign Visual Practice", kicker: "VISUAL FIRST", defaultCount: 20 },
+    topic: { title: "Official Topic Practice", kicker: "STUDY GUIDE", defaultCount: 10 },
     exam: { title: "Exam Simulator", kicker: "ENGLISH ONLY", defaultCount: config.EXAM_QUESTION_COUNT }
   });
 
@@ -205,6 +215,41 @@
     el.wrongCardSummary.innerHTML = `${stats.wrong} 道题需要复习<small>${stats.wrong} ${stats.wrong === 1 ? "question" : "questions"} to review</small>`;
     el.masteredCardSummary.innerHTML = `已掌握 ${stats.mastered} / ${stats.totalQuestions}<small>${stats.mastered} of ${stats.totalQuestions} mastered</small>`;
     el.roadSignsCardSummary.innerHTML = `${roadSignImages} 张标志图可学习<small>每轮约 80% 图片学习 · 20% 文字巩固</small>`;
+    const topicStats = getStudyGuideStats();
+    el.studyGuideCardSummary.textContent = `已覆盖 ${topicStats.covered} / 84 · 已掌握 ${topicStats.mastered}`;
+  }
+
+  function getStudyGuideStats() {
+    const topics = Array.isArray(window.FLORIDA_STUDY_GUIDE_84) ? window.FLORIDA_STUDY_GUIDE_84 : [];
+    const progress = storage.getProgress();
+    const wrong = storage.getWrongBook();
+    const topicRows = topics.map((topic) => {
+      const questions = appState.questionBank.filter((question) => question.studyGuideItems.includes(topic.id));
+      const totals = questions.reduce((sum, question) => {
+        const item = progress[question.id] || {};
+        sum.answered += Number(item.totalAnswered) || 0;
+        sum.correct += Number(item.totalCorrect) || 0;
+        if ((Number(item.totalAnswered) || 0) > 0) sum.completed += 1;
+        return sum;
+      }, { answered: 0, correct: 0, completed: 0 });
+      const accuracy = totals.answered ? Math.round((totals.correct / totals.answered) * 100) : 0;
+      const unresolvedWrong = questions.some((question) => Boolean(wrong[question.id]));
+      const allCompleted = questions.length > 0 && totals.completed === questions.length;
+      const status = totals.answered === 0
+        ? "not-practiced"
+        : allCompleted && accuracy >= 80 && !unresolvedWrong
+          ? "mastered"
+          : "learning";
+      return { topic, questions, ...totals, accuracy, unresolvedWrong, status };
+    });
+
+    return {
+      rows: topicRows,
+      covered: topicRows.filter((row) => row.questions.length > 0).length,
+      notPracticed: topicRows.filter((row) => row.status === "not-practiced").length,
+      learning: topicRows.filter((row) => row.status === "learning").length,
+      mastered: topicRows.filter((row) => row.status === "mastered").length
+    };
   }
 
   function getQuizPool(mode) {
@@ -216,9 +261,9 @@
     return appState.questionBank;
   }
 
-  function startQuiz(mode, requestedCount) {
+  function startQuiz(mode, requestedCount, poolOverride = null) {
     const details = MODE_DETAILS[mode];
-    const pool = getQuizPool(mode);
+    const pool = Array.isArray(poolOverride) ? poolOverride : getQuizPool(mode);
     const count = mode === "exam"
       ? config.EXAM_QUESTION_COUNT
       : Math.max(1, Number(requestedCount) || details.defaultCount);
@@ -242,7 +287,11 @@
       bilingual: mode !== "exam"
     });
     appState.currentAnswer = null;
-    appState.lastSessionConfig = { mode, count };
+    appState.lastSessionConfig = {
+      mode,
+      count,
+      poolIds: Array.isArray(poolOverride) ? pool.map((question) => question.id) : null
+    };
 
     el.quizModeTitle.textContent = details.title;
     el.quizModeKicker.textContent = details.kicker;
@@ -309,6 +358,7 @@
     }
 
     el.optionsContainer.innerHTML = "";
+    el.optionsContainer.classList.toggle("image-options", question.options.some((option) => option.image));
     question.options.forEach((option, index) => {
       const button = document.createElement("button");
       button.type = "button";
@@ -320,6 +370,16 @@
       letter.textContent = String.fromCharCode(65 + index);
 
       const copy = document.createElement("span");
+      copy.className = "option-copy";
+      if (option.image) {
+        const optionImage = document.createElement("img");
+        optionImage.className = "option-image";
+        optionImage.src = option.image;
+        optionImage.alt = option.imageAlt || `${option.en} answer diagram`;
+        optionImage.addEventListener("error", () => optionImage.classList.add("hidden"));
+        copy.appendChild(optionImage);
+        button.classList.add("option-with-image");
+      }
       const english = document.createElement("span");
       english.className = "option-en";
       english.textContent = option.en;
@@ -464,6 +524,25 @@
     el.correctResult.textContent = results.correct;
     el.incorrectResult.textContent = results.incorrect;
     el.accuracyResult.textContent = `${results.percent}%`;
+    const domainLabels = {
+      traffic_laws: ["交通法规", "Traffic Laws"],
+      safe_driving: ["安全驾驶", "Safe Driving"],
+      traffic_controls: ["交通控制", "Traffic Controls"]
+    };
+    const domainResults = results.answers.reduce((counts, answer) => {
+      const domain = answer.question.examDomain;
+      counts[domain] = counts[domain] || { correct: 0, total: 0 };
+      counts[domain].total += 1;
+      if (answer.isCorrect) counts[domain].correct += 1;
+      return counts;
+    }, {});
+    const roadSignCount = results.answers.filter((answer) => answer.question.category === "road_sign").length;
+    el.examDomainBreakdown.classList.toggle("hidden", !isExam);
+    el.examDomainBreakdown.innerHTML = isExam
+      ? Object.entries(domainLabels).map(([domain, labels]) => `
+          <div><span>${labels[0]}<small>${labels[1]}</small></span><strong>${domainResults[domain]?.correct || 0} / ${domainResults[domain]?.total || 0}</strong></div>
+        `).join("") + `<p>本套道路标志题 ${roadSignCount} 道 · ${roadSignCount} Road Sign Questions</p>`
+      : "";
     el.passStatus.classList.toggle("hidden", !isExam);
     el.passStatus.classList.toggle("failed", isExam && !passed);
     el.passStatus.textContent = passed ? "PASS" : "NOT PASSED";
@@ -494,7 +573,10 @@
       goHome();
       return;
     }
-    startQuiz(appState.lastSessionConfig.mode, appState.lastSessionConfig.count);
+    const pool = appState.lastSessionConfig.poolIds
+      ? appState.questionBank.filter((question) => appState.lastSessionConfig.poolIds.includes(question.id))
+      : null;
+    startQuiz(appState.lastSessionConfig.mode, appState.lastSessionConfig.count, pool);
   }
 
   function openWrongAnswers() {
@@ -549,6 +631,45 @@
     showView(el.progressView);
   }
 
+  function openStudyGuide() {
+    const stats = getStudyGuideStats();
+    el.studyGuideCovered.textContent = `${stats.covered} / 84`;
+    el.studyGuideNotPracticed.textContent = stats.notPracticed;
+    el.studyGuideLearning.textContent = stats.learning;
+    el.studyGuideMastered.textContent = stats.mastered;
+    const statusLabels = {
+      "not-practiced": ["未练习", "Not Practiced"],
+      learning: ["学习中", "Learning"],
+      mastered: ["已掌握", "Mastered"]
+    };
+
+    el.studyGuideList.innerHTML = stats.rows.map((row) => {
+      const labels = statusLabels[row.status];
+      return `
+        <article class="study-topic-card ${row.status}">
+          <div class="study-topic-number">SG${String(row.topic.id).padStart(3, "0")}</div>
+          <div class="study-topic-copy">
+            <h2>${escapeHtml(row.topic.title.zh)}</h2>
+            <p class="study-topic-en">${escapeHtml(row.topic.title.en)}</p>
+            <div class="study-topic-meta"><span>题目 ${row.questions.length} · Questions</span><span>正确率 ${row.accuracy}% · Accuracy</span><span>手册页 ${escapeHtml(row.topic.source.pages)} · Pages</span></div>
+          </div>
+          <div class="study-topic-actions">
+            <span class="topic-status ${row.status}"><i class="status-dot ${row.status}"></i>${labels[0]}<small>${labels[1]}</small></span>
+            <button class="topic-practice-btn" type="button" data-topic-id="${row.topic.id}" ${row.questions.length ? "" : "disabled"}>练习此考点<small>Practice Topic</small></button>
+          </div>
+        </article>`;
+    }).join("");
+
+    el.studyGuideList.querySelectorAll("[data-topic-id]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const topicId = Number(button.dataset.topicId);
+        const topicQuestions = appState.questionBank.filter((question) => question.studyGuideItems.includes(topicId));
+        startQuiz("topic", topicQuestions.length, topicQuestions);
+      });
+    });
+    showView(el.studyGuideView);
+  }
+
   function clearWrongAnswers() {
     if (!window.confirm("确定清空全部错题吗？已掌握记录会保留。\n\nClear all wrong answers? Mastery records will remain.")) return;
     storage.clearWrongBook();
@@ -573,6 +694,7 @@
     el.startRoadSignsBtn.addEventListener("click", () => startQuiz("road_sign", MODE_DETAILS.road_sign.defaultCount));
     el.startExamBtn.addEventListener("click", () => startQuiz("exam", config.EXAM_QUESTION_COUNT));
     el.openProgressBtn.addEventListener("click", openProgress);
+    el.openStudyGuideBtn.addEventListener("click", openStudyGuide);
     el.exitQuizBtn.addEventListener("click", goHome);
     el.languageButtons.forEach((button) => button.addEventListener("click", () => setLanguageMode(button.dataset.language)));
     el.nextBtn.addEventListener("click", nextQuestion);
@@ -614,7 +736,15 @@
       bilingual: appState.session?.bilingual ?? null,
       currentQuestionType: appState.session?.currentQuestion?.type || null,
       studyPhase: appState.session?.currentQuestion?.studyPhase || null,
-      hasQuestionImage: Boolean(appState.session?.currentQuestion?.image)
+      hasQuestionImage: Boolean(appState.session?.currentQuestion?.image),
+      hasOptionImages: Boolean(appState.session?.currentQuestion?.options?.some((option) => option.image)),
+      examDistribution: appState.session?.mode === "exam"
+        ? appState.session.questions.reduce((counts, question) => {
+            counts[question.examDomain] = (counts[question.examDomain] || 0) + 1;
+            if (question.category === "road_sign") counts.road_signs = (counts.road_signs || 0) + 1;
+            return counts;
+          }, {})
+        : null
     })
   });
 

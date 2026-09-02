@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Yellow X lane signal</title>
+  <desc id="desc">Yellow X lane signal</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="190" y="55" width="260" height="250" rx="30" fill="#111827"/><path d="M250 110l140 140m0-140L250 250" stroke="#facc15" stroke-width="32" stroke-linecap="round"/>
+</svg>

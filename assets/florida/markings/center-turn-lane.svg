@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Two-way left-turn center lane</title>
+  <desc id="desc">Two-way left-turn center lane</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="80" width="480" height="360" fill="#454b52"/>
+<rect x="76" width="4" height="360" fill="#cbd5e1"/>
+<rect x="560" width="4" height="360" fill="#cbd5e1"/>
+<path d="M104 0v360M536 0v360" stroke="#fff" stroke-width="8"/>
+<path d="M258 0v360M382 0v360" stroke="#facc15" stroke-width="8"/>
+<path d="M320 72v80h-25l25 38 25-38h-25M320 288v-80h25l-25-38-25 38h25" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/>
+
+</svg>

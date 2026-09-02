@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Broken yellow center line</title>
+  <desc id="desc">Broken yellow center line</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="80" width="480" height="360" fill="#454b52"/>
+<rect x="76" width="4" height="360" fill="#cbd5e1"/>
+<rect x="560" width="4" height="360" fill="#cbd5e1"/>
+<path d="M104 0v360M536 0v360" stroke="#fff" stroke-width="8"/>
+<path d="M320 0v58m0 42v58m0 42v58m0 42v60" stroke="#facc15" stroke-width="10"/>
+
+
+</svg>

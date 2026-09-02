@@ -29,6 +29,10 @@
       ? window.QUESTIONS
       : [];
     const allRawQuestions = [...common, ...stateQuestions, ...legacyQuestions];
+    const floridaV22 = stateQuestions.filter((question) => String(question.id || "").startsWith("FL-V22-"));
+    const studyGuide = Array.isArray(window.FLORIDA_STUDY_GUIDE_84)
+      ? window.FLORIDA_STUDY_GUIDE_84
+      : [];
     const signQuestions = common.filter((question) =>
       String(question.id || "").startsWith("US-SIGN-")
     );
@@ -80,6 +84,57 @@
       if (!question.source?.authority || !question.source?.document || !question.source?.edition) errors.push(`Missing source: ${question.id}`);
     });
 
+    floridaV22.forEach((question) => {
+      if (question.state !== "FL" || question.scope !== "state") errors.push(`Invalid Florida scope: ${question.id}`);
+      if (!["traffic_laws", "safe_driving", "traffic_controls"].includes(question.examDomain)) errors.push(`Invalid examDomain: ${question.id}`);
+      if (!["basic", "intermediate", "application"].includes(question.difficulty)) errors.push(`Invalid difficulty: ${question.id}`);
+      if (!["image_to_meaning", "meaning_to_image", "scenario_image", "text"].includes(question.type)) errors.push(`Invalid question type: ${question.id}`);
+      if (!Array.isArray(question.studyGuideItems) || !question.studyGuideItems.length) errors.push(`Missing studyGuideItems: ${question.id}`);
+      if (!question.question?.en || !question.question?.zh) errors.push(`Missing bilingual question: ${question.id}`);
+      if (!Array.isArray(question.options) || question.options.length !== 4) errors.push(`Options length is not 4: ${question.id}`);
+      else {
+        if (question.options.some((option) => !option.en || !option.zh)) errors.push(`Missing bilingual option: ${question.id}`);
+        if (new Set(question.options.map((option) => option.en.trim().toLowerCase())).size !== 4) errors.push(`Duplicate answer option: ${question.id}`);
+        question.options.filter((option) => option.image).forEach((option) => {
+          if (!option.imageAlt) errors.push(`Missing option image alt: ${question.id}`);
+        });
+      }
+      if (question.correctIndex !== 0) errors.push(`Raw V2.2 correctIndex must identify one valid answer: ${question.id}`);
+      if (!question.explanation?.en || !question.explanation?.zh) errors.push(`Missing bilingual explanation: ${question.id}`);
+      if (!Array.isArray(question.keywords) || question.keywords.length < 1 || question.keywords.length > 3) errors.push(`Keywords must contain 1-3 items: ${question.id}`);
+      if (question.image && !question.imageAlt) errors.push(`Missing question image alt: ${question.id}`);
+      if (!question.source?.authority || !question.source?.document || !question.source?.edition
+        || !question.source?.chapter || !question.source?.section || !question.source?.page
+        || !question.source?.verifiedDate || !question.source?.verificationStatus) errors.push(`Incomplete source trace: ${question.id}`);
+      if (question.source?.verificationStatus === "verified_current"
+        && !question.source?.currentOfficialSource?.url) errors.push(`Missing current official source: ${question.id}`);
+    });
+
+    if (studyGuide.length !== 84) errors.push(`Study Guide topic count is not 84: ${studyGuide.length}`);
+    duplicates(studyGuide, (topic) => topic.id)
+      .forEach((item) => errors.push(`Duplicate Study Guide id: ${item.value}`));
+    studyGuide.forEach((topic) => {
+      if (!topic.title?.en || !topic.title?.zh || !topic.source?.pages || !topic.examDomain) errors.push(`Incomplete Study Guide topic: ${topic.id}`);
+      if (!floridaV22.some((question) => question.studyGuideItems.includes(topic.id))) errors.push(`Uncovered Study Guide topic: ${topic.id}`);
+    });
+
+    const domainCounts = floridaV22.reduce((counts, question) => {
+      counts[question.examDomain] = (counts[question.examDomain] || 0) + 1;
+      return counts;
+    }, {});
+    if (floridaV22.length !== 150) errors.push(`V2.2 Florida question count is not 150: ${floridaV22.length}`);
+    if (domainCounts.traffic_laws !== 50) errors.push(`Traffic Laws count is not 50: ${domainCounts.traffic_laws || 0}`);
+    if (domainCounts.safe_driving !== 55) errors.push(`Safe Driving count is not 55: ${domainCounts.safe_driving || 0}`);
+    if (domainCounts.traffic_controls !== 45) errors.push(`Traffic Controls count is not 45: ${domainCounts.traffic_controls || 0}`);
+
+    const roadMarkings = floridaV22.filter((question) => question.category === "road_marking");
+    const visualRoadMarkings = roadMarkings.filter((question) =>
+      question.image || question.options.some((option) => option.image)
+    );
+    if (!roadMarkings.length || visualRoadMarkings.length / roadMarkings.length < 0.7) {
+      errors.push(`Road marking image ratio is below 70%: ${visualRoadMarkings.length}/${roadMarkings.length}`);
+    }
+
     if (knowledge.length < 80) errors.push(`Knowledge bank below target: ${knowledge.length}`);
     if (signQuestions.length < 150) errors.push(`Question bank below target: ${signQuestions.length}`);
     if (signQuestions.length > 250) warnings.push(`Question bank exceeds first-batch target: ${signQuestions.length}`);
@@ -95,6 +150,11 @@
     }, {});
     const imageQuestions = signQuestions.filter((question) => question.type === "image").length;
     const visualMemoryQuestions = signQuestions.filter((question) => question.visualMemory?.image).length;
+    const verification = floridaV22.reduce((counts, question) => {
+      const status = question.source?.verificationStatus || "missing";
+      counts[status] = (counts[status] || 0) + 1;
+      return counts;
+    }, {});
 
     return Object.freeze({
       valid: errors.length === 0,
@@ -106,7 +166,16 @@
         imageQuestions,
         visualMemoryQuestions,
         categories: Object.freeze(categories),
-        sources: Object.freeze(sources)
+        sources: Object.freeze(sources),
+        floridaV22Questions: floridaV22.length,
+        floridaDomains: Object.freeze(domainCounts),
+        studyGuideCovered: studyGuide.filter((topic) =>
+          floridaV22.some((question) => question.studyGuideItems.includes(topic.id))
+        ).length,
+        roadMarkingVisualRatio: roadMarkings.length
+          ? Math.round((visualRoadMarkings.length / roadMarkings.length) * 100)
+          : 0,
+        verification: Object.freeze(verification)
       })
     });
   }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Red reflectors facing the driver</title>
+  <desc id="desc">Red reflectors facing the driver</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="80" width="480" height="360" fill="#454b52"/>
+<rect x="76" width="4" height="360" fill="#cbd5e1"/>
+<rect x="560" width="4" height="360" fill="#cbd5e1"/>
+<path d="M104 0v360M536 0v360" stroke="#fff" stroke-width="8"/>
+<path d="M320 0v360" stroke="#fff" stroke-width="5" stroke-dasharray="50 34"/>
+<g fill="#ef4444" stroke="#fecaca" stroke-width="3"><circle cx="320" cy="56" r="10"/><circle cx="320" cy="132" r="10"/><circle cx="320" cy="208" r="10"/><circle cx="320" cy="284" r="10"/></g><path d="M216 305l32-22v14h36v16h-36v14z" fill="#dbeafe"/>
+
+</svg>

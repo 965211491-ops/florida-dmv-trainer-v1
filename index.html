@@ -10,7 +10,7 @@
   />
   <title>美国 DMV 英文驾考训练 | US DMV English Trainer</title>
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="style.css?v=2.1.1" />
+  <link rel="stylesheet" href="style.css?v=2.2.0" />
 </head>
 <body>
   <a class="skip-link" href="#appMain">跳到主要内容</a>
@@ -147,6 +147,12 @@
           <span class="card-arrow" aria-hidden="true">→</span>
         </button>
 
+        <button id="openStudyGuideBtn" class="feature-card feature-button study-guide-card" type="button">
+          <span class="feature-icon feature-icon-blue" aria-hidden="true">84</span>
+          <span class="feature-copy"><span class="feature-kicker">官方框架 · OFFICIAL STUDY GUIDE</span><strong>官方 84 考点</strong><span class="feature-en">Official 84 Topics</span><span id="studyGuideCardSummary">已覆盖 84 / 84 · 已掌握 0</span></span>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
         <button id="openProgressBtn" class="feature-card feature-button" type="button">
           <span class="feature-icon feature-icon-slate" aria-hidden="true">P</span>
           <span class="feature-copy"><span class="feature-kicker">学习数据 · YOUR DATA</span><strong>学习进度</strong><span class="feature-en">Progress</span><span>查看完整学习记录</span></span>
@@ -214,6 +220,7 @@
           <div><span>Incorrect</span><strong id="incorrectResult">0</strong></div>
           <div><span>Accuracy</span><strong id="accuracyResult">0%</strong></div>
         </div>
+        <div id="examDomainBreakdown" class="exam-domain-breakdown hidden" aria-label="Exam blueprint results"></div>
         <div class="result-actions">
           <button id="restartBtn" class="primary-btn" type="button">Practice Again</button>
           <button id="resultWrongBtn" class="secondary-btn" type="button">Review Wrong Answers</button>
@@ -256,10 +263,26 @@
       </article>
       <div class="data-actions"><button id="resetProgressBtn" class="ghost-btn danger-text" type="button">重置全部学习数据 <small>Reset All Learning Data</small></button></div>
     </section>
+
+    <section id="studyGuideView" class="view hidden" aria-labelledby="studyGuideTitle">
+      <div class="page-toolbar">
+        <button class="back-button home-action" type="button">← 返回主页 <small>Home</small></button>
+        <div><p class="eyebrow">佛州官方框架 · OFFICIAL STUDY GUIDE</p><h1 id="studyGuideTitle">官方 84 考点</h1><p class="page-english-name">Official 84 Topics</p><p>按 FLHSMV 2023 手册第 11 章考点组织；法规时效另行标记。</p></div>
+      </div>
+      <div class="study-guide-summary" aria-label="官方考点学习汇总">
+        <article><span>已覆盖</span><strong id="studyGuideCovered">84 / 84</strong><small>Covered</small></article>
+        <article><span>未练习</span><strong id="studyGuideNotPracticed">84</strong><small>Not Practiced</small></article>
+        <article><span>学习中</span><strong id="studyGuideLearning">0</strong><small>Learning</small></article>
+        <article><span>已掌握</span><strong id="studyGuideMastered">0</strong><small>Mastered</small></article>
+      </div>
+      <div class="study-guide-legend"><span><i class="status-dot not-practiced"></i>未练习 · Not Practiced</span><span><i class="status-dot learning"></i>学习中 · Learning</span><span><i class="status-dot mastered"></i>已掌握 · Mastered</span></div>
+      <div id="studyGuideList" class="study-guide-list"></div>
+      <p class="legal-note">考点标题为本站概括，不复制官方完整问题。2023 手册为基础版本；易变法规会单独记录当前官方来源和核验日期。</p>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <strong>美国 DMV 英文驾考训练</strong><span id="versionText">V2.1</span>
+    <strong>美国 DMV 英文驾考训练</strong><span id="versionText">V2.2</span>
     <small class="footer-english">US DMV English Trainer</small>
     <p>独立学习工具，并非 DMV 或 FLHSMV 官方网站。<span class="english-aux">Independent learning tool · Not an official DMV or FLHSMV website.</span></p>
   </footer>
@@ -276,12 +299,16 @@
   <script src="data/common/signs-guide.js"></script>
   <script src="data/common/signs-work-zone.js"></script>
   <script src="data/common/signs-foundations.js"></script>
-  <script src="data/states/florida/questions.js"></script>
+  <script src="data/coverage/florida-study-guide-84.js?v=2.2.0"></script>
+  <script src="data/states/florida/questions.js?v=2.2.0"></script>
+  <script src="data/states/florida/questions-safe-driving.js?v=2.2.0"></script>
+  <script src="data/states/florida/questions-laws.js?v=2.2.0"></script>
+  <script src="data/states/florida/questions-controls.js?v=2.2.0"></script>
   <script src="js/config.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/data-loader.js"></script>
-  <script src="js/data-validator.js?v=2.1.4"></script>
-  <script src="js/quiz.js?v=2.1.1"></script>
-  <script src="js/app.js?v=2.1.1"></script>
+  <script src="js/data-validator.js?v=2.2.0"></script>
+  <script src="js/quiz.js?v=2.2.0"></script>
+  <script src="js/app.js?v=2.2.0"></script>
 </body>
 </html>

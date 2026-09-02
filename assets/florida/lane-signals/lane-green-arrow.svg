@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Green arrow lane signal</title>
+  <desc id="desc">Green arrow lane signal</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="190" y="55" width="260" height="250" rx="30" fill="#111827"/><path d="M320 270V118m0 0-64 70m64-70 64 70" stroke="#22c55e" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

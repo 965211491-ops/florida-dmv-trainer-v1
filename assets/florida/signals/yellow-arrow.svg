@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">yellow traffic arrow</title>
+  <desc id="desc">yellow traffic arrow</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="215" y="105" width="210" height="150" rx="28" fill="#111827"/><path d="M265 180l82-61v35h44v52h-44v35z" fill="#facc15"/>
+</svg>

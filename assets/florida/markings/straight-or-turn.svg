@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Straight or turn pavement arrows</title>
+  <desc id="desc">Straight or turn pavement arrows</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="80" width="480" height="360" fill="#454b52"/>
+<rect x="76" width="4" height="360" fill="#cbd5e1"/>
+<rect x="560" width="4" height="360" fill="#cbd5e1"/>
+<path d="M104 0v360M536 0v360" stroke="#fff" stroke-width="8"/>
+
+<path d="M300 284V118l-26 28-14-14 50-54 50 54-14 14-26-28v166z" fill="#fff"/><path d="M320 230h72v-30l54 40-54 40v-28h-72z" fill="#fff"/>
+
+</svg>

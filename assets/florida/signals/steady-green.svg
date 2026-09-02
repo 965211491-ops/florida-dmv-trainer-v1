@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Steady green traffic signal</title>
+  <desc id="desc">Steady green traffic signal</desc>
+  <rect width="640" height="360" rx="24" fill="#eef2f6"/>
+  <rect x="255" y="28" width="130" height="304" rx="28" fill="#111827"/><circle cx="320" cy="85" r="34" fill="#202733" stroke="#0f172a" stroke-width="7"/><circle cx="320" cy="180" r="34" fill="#202733" stroke="#0f172a" stroke-width="7"/><circle cx="320" cy="275" r="34" fill="#22c55e" stroke="#0f172a" stroke-width="7"/>
+</svg>

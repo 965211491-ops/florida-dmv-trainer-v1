@@ -60,7 +60,28 @@
     florida_insurance: "Florida Insurance",
     florida_license: "Florida License",
     florida_penalties: "Florida Penalties",
-    florida_numbers: "Florida Numbers"
+    florida_numbers: "Florida Numbers",
+    vehicle_safety: "Vehicle Safety",
+    vehicle_law: "Vehicle Requirements",
+    load_security: "Load Security",
+    distracted_driving: "Distracted Driving",
+    alcohol_awareness: "Alcohol Awareness",
+    occupant_protection: "Occupant Protection",
+    occupant_law: "Occupant Laws",
+    speed_management: "Speed Management",
+    speed_law: "Speed Laws",
+    following_distance: "Following Distance",
+    lane_change: "Lane Changes",
+    roadside_safety: "Roadside Safety",
+    turning_law: "Turning Rules",
+    lane_law: "Lane Laws",
+    passing_law: "Passing Laws",
+    parking_law: "Parking Laws",
+    crash_law: "Crash Duties",
+    lane_signal: "Lane Signals",
+    school_zone: "School Zone",
+    load_security: "Load Security",
+    driving_test: "Driving Test"
   });
 
   const CATEGORY_LABELS_ZH = Object.freeze({
@@ -88,8 +109,38 @@
     florida_insurance: "佛州保险规定",
     florida_license: "佛州驾照规定",
     florida_penalties: "佛州处罚规定",
-    florida_numbers: "佛州数字考点"
+    florida_numbers: "佛州数字考点",
+    vehicle_safety: "车辆安全",
+    vehicle_law: "车辆法规",
+    load_security: "货物固定",
+    distracted_driving: "分心驾驶",
+    alcohol_awareness: "酒精风险",
+    occupant_protection: "乘员保护",
+    occupant_law: "乘员法规",
+    speed_management: "速度管理",
+    speed_law: "限速法规",
+    following_distance: "跟车距离",
+    lane_change: "变更车道",
+    roadside_safety: "路边安全",
+    turning_law: "转弯规则",
+    lane_law: "车道法规",
+    passing_law: "超车法规",
+    parking_law: "停车法规",
+    crash_law: "事故义务",
+    lane_signal: "车道信号",
+    school_zone: "校区交通",
+    driving_test: "路考动作"
   });
+
+  const CONTROL_CATEGORIES = new Set([
+    "road_sign", "traffic_signal", "road_marking", "lane_signal", "railroad", "school_zone"
+  ]);
+  const LAW_CATEGORIES = new Set([
+    "vehicle_law", "load_security", "occupant_law", "speed_law", "turning_law", "lane_law",
+    "passing_law", "parking_law", "crash_law", "florida_law", "florida_school_bus",
+    "florida_move_over", "florida_dui", "florida_insurance", "florida_license",
+    "florida_penalties", "florida_numbers"
+  ]);
 
   function toCategorySlug(category) {
     if (!category) return "safe_driving";
@@ -105,12 +156,16 @@
   function normalizeSource(source, legacyQuestion) {
     if (source && typeof source === "object") {
       return {
+        ...source,
         authority: source.authority || null,
         document: source.document || null,
         edition: source.edition || null,
+        chapter: source.chapter || null,
         section: source.section || null,
         page: source.page ?? null,
+        pages: source.pages ?? source.page ?? null,
         verifiedDate: source.verifiedDate || null,
+        verificationStatus: source.verificationStatus || source.status || null,
         status: source.status || null,
         url: source.url || null
       };
@@ -122,10 +177,18 @@
       edition: null,
       section: null,
       page: legacyQuestion.sourcePage ?? null,
+      pages: legacyQuestion.sourcePage ?? null,
       verifiedDate: null,
+      verificationStatus: legacyQuestion.sourceStatus || "practice-paraphrase",
       status: legacyQuestion.sourceStatus || "practice-paraphrase",
       url: null
     };
+  }
+
+  function inferExamDomain(category) {
+    if (CONTROL_CATEGORIES.has(category)) return "traffic_controls";
+    if (LAW_CATEGORIES.has(category)) return "traffic_laws";
+    return "safe_driving";
   }
 
   function normalizeQuestion(question, fallbackState, fallbackScope) {
@@ -137,11 +200,12 @@
       ...question,
       state,
       scope: question.scope || fallbackScope,
+      examDomain: question.examDomain || inferExamDomain(category),
       category,
       categoryLabel: question.categoryLabel || CATEGORY_LABELS[category] || question.category || "Driving Knowledge",
       categoryLabelZh: question.categoryLabelZh || CATEGORY_LABELS_ZH[category] || "驾考知识",
       subcategory: question.subcategory || null,
-      type: question.type || (image ? "image" : "text"),
+      type: question.type || (image ? "image_to_meaning" : "text"),
       image,
       question: {
         en: question.question?.en || "",
@@ -154,6 +218,8 @@
         zh: question.explanation?.zh || ""
       },
       keywords: Array.isArray(question.keywords) ? question.keywords : [],
+      difficulty: question.difficulty || "basic",
+      studyGuideItems: Array.isArray(question.studyGuideItems) ? question.studyGuideItems : [],
       source: normalizeSource(question.source, question)
     };
   }

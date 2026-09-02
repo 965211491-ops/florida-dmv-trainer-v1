@@ -456,8 +456,8 @@ window.QUESTIONS = [
         "zh": "2 秒"
       },
       {
-        "en": "Three to four seconds",
-        "zh": "3 到 4 秒"
+        "en": "At least four seconds",
+        "zh": "至少 4 秒"
       },
       {
         "en": "Ten seconds",
@@ -466,8 +466,8 @@ window.QUESTIONS = [
     ],
     "correctIndex": 2,
     "explanation": {
-      "en": "The handbook recommends a minimum following distance of three to four seconds.",
-      "zh": "手册建议至少保持 3 到 4 秒的跟车距离。"
+      "en": "The 2023 handbook recommends a minimum following interval of at least four seconds under favorable conditions.",
+      "zh": "2023 年手册建议在良好条件下至少保持 4 秒跟车时间。"
     },
     "keywords": [
       {
@@ -475,8 +475,8 @@ window.QUESTIONS = [
         "zh": "跟车距离"
       },
       {
-        "en": "three to four seconds",
-        "zh": "3 到 4 秒"
+        "en": "at least four seconds",
+        "zh": "至少 4 秒"
       }
     ],
     "source": "FLHSMV English Driver Handbook — practice paraphrase",
